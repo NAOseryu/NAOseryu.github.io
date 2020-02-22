@@ -34,7 +34,7 @@ var getUserAttribute = function(){
         $("div#menu h3").text("セッションの取得に失敗してます");
       } else {
         $("div#menu h3").text("ようこそ！" + cognitoUser.username + "さん");
-        });
+        };
       }
     });
   } else {
