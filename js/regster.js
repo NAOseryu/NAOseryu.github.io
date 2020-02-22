@@ -5,8 +5,6 @@ const poolData = {
 };
 const userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
 
-var attributeList = [];
-
 /**
  * 画面読み込み時の処理
  */
@@ -18,14 +16,14 @@ $(document).ready(function() {
     IdentityPoolId: 'ap-northeast-1:221fd836-a94e-4135-b98c-d951bf2186c7'
 	});
 
-	// 「Create Account」ボタン押下時
+	// 「登録」ボタン押下時
 	$("#regster").click(function(event) {
     regster();
 	});
 });
 
 /**
- * サインアップ処理。
+ * 登録処理。
  */
 var regster = function() {
 
