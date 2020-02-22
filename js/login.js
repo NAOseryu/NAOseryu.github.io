@@ -4,11 +4,6 @@ var poolData = {
   ClientId : '4so6sevjpqoqmmhh3ki24r11fn'
 };
 var userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
-var userData = {
-	Username: 'username',
-	Pool: userPool,
-};
-var cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
 
 /**
  * 画面読み込み時の処理
@@ -47,6 +42,12 @@ var login = function() {
   var authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails(
     authenticationData
   );
+
+  var userData = {
+  	Username: userId,
+  	Pool: userPool,
+  };
+  var cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
 
   cognitoUser.authenticateUser(authenticationDetails, {
   	onSuccess: function(result) {
