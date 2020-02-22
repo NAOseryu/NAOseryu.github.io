@@ -60,6 +60,8 @@ var login = function() {
   			} else {
   				// Instantiate aws sdk service objects now that the credentials have been updated.
   				// example: var s3 = new AWS.S3();
+          //ログイン完了！
+          location.href = "https://naoseryu.github.io/wacca/top.html";
   				console.log('Successfully logged!');
   			}
   		});

@@ -35,13 +35,13 @@ var regster = function() {
   	return false;
   }
 
-  // サインアップ処理
+  // 登録処理
   userPool.signUp(userId, password, null, null, function(err, result){
     if (err) {
     	alert(err);
 		return;
     } else {
-      	// サインアップ成功の場合、アクティベーション画面に遷移する
+      	// 登録成功の場合、登録成功画面に遷移する
         location.href = "https://naoseryu.github.io/wacca/registerSuccess.html";
     }
   });

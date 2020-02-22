@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8"/>
+  <title>WACCAスコアツール</title>
+</head>
+
+<!-- Amazon Cognito用 -->
+<script src="../js/jsbn.js"></script>
+<script src="../js/jsbn2.js"></script>
+<script src="../js/sjcl.js"></script>
+<script src="../js/amazon-cognito-identity.min.js"></script>
+<!-- AWS SDK //-->
+<script src="https://sdk.amazonaws.com/js/aws-sdk-2.624.0.min.js"></script>
+<!-- jquery用 -->
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
+<script src="../js/top.js"></script>
+
+<body>
+  <div id="menu">
+   <h3></h3>
+  </div>
+  <h3>スコアCSV入力</h3>
+
+  <form method="post" action="addScore">
+
+    <p><textarea name="scoreCsv" cols="50" rows="20"></textarea></p>
+    <input type="submit"/> <input type="reset"/>
+
+  </form>
+</body>
+
+<a href= "https://naoseryu.github.io/wacca/register.html" >登録はこちら</a></br>
+<a href= "https://naoseryu.github.io/wacca/login.html" >ログインはこちら</a>
+
+</html>
