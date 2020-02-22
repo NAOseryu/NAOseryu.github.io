@@ -50,10 +50,11 @@ var getUserAttribute = function(){
  * スコアをLambdaに送信する
  */
 var addScore = function(){
-  
+
   //AWS.config.update({credentials: AWS.config.credentials ,region:"us-west-2"});
 
-  var context = Base64.encode(JSON.stringify( $("#scoreCsv").val() ));
+  var scoreData = $("#scoreCsv").val();
+  var context = Base64.encode(JSON.stringify( scoreData ));
 
   var lambda = new AWS.Lambda();
 
