@@ -31,14 +31,14 @@ var getUserAttribute = function(){
     cognitoUser.getSession(function(err, session) {
       if (err) {
         console.log(err);
-        $("div#menu h1").text("セッションの取得に失敗してます");
+        $("div#menu h3").text("セッションの取得に失敗してます");
       } else {
-        $("div#menu h1").text("ようこそ！" + cognitoUser.username + "さん");
+        $("div#menu h3").text("ようこそ！" + cognitoUser.username + "さん");
         });
       }
     });
   } else {
-    $("div#menu h1").text("ログインしてません");
+    $("div#menu h3").text("ログインしてません");
     }
   };
 }
