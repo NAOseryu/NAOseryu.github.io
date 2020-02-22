@@ -1,14 +1,3 @@
-// 認証データの作成
-var userId = $("#userId").val();
-var password = $("#password").val();
-var authenticationData = {
-  Username: userId,
-  Password: password,
-};
-var authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails(
-  authenticationData
-);
-
 // ユーザープールの設定
 var poolData = {
   UserPoolId : 'ap-northeast-1_5ynbUsboz',
@@ -43,10 +32,21 @@ $(document).ready(function() {
  */
 var login = function() {
 
+  var userId = $("#userId").val();
+  var password = $("#password").val();
 	// 何か1つでも未入力の項目がある場合、処理終了
   if (!userId | !password) {
   	return false;
   }
+
+  // 認証データの作成
+  var authenticationData = {
+    Username: userId,
+    Password: password,
+  };
+  var authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails(
+    authenticationData
+  );
 
   cognitoUser.authenticateUser(authenticationDetails, {
   	onSuccess: function(result) {
