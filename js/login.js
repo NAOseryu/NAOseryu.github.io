@@ -1,7 +1,9 @@
 // 認証データの作成
+var userId = $("#userId").val();
+var password = $("#password").val();
 var authenticationData = {
-  Username: $("#userId").val();,
-  Password: $("#password").val();
+  Username: userId,
+  Password: password;
 };
 var authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails(
   authenticationData
