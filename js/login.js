@@ -3,7 +3,7 @@ var userId = $("#userId").val();
 var password = $("#password").val();
 var authenticationData = {
   Username: userId,
-  Password: password;
+  Password: password,
 };
 var authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails(
   authenticationData
