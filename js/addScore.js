@@ -54,14 +54,14 @@ var addScore = function(){
   //AWS.config.update({credentials: AWS.config.credentials ,region:"us-west-2"});
 
   var scoreData = $("#scoreCsv").val();
-  var context = Base64.encode(JSON.stringify( scoreData ));
+  //var context = Base64.encode(JSON.stringify( scoreData ));
 
   var lambda = new AWS.Lambda();
 
   var params = {
     FunctionName:"addWaccaScore",
     InvocationType:"RequestResponse",
-    ClientContext:context
+    Payload:scoreData
   };
 
   lambda.invoke( params,function(err,data) {
