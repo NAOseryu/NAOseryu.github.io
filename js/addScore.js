@@ -22,7 +22,7 @@ $(document).ready(function() {
 });
 
 // 「送信」ボタン押下時
-$("#regster").click(function(event) {
+$("#addScore").click(function(event) {
   addScore();
 });
 
