@@ -19,11 +19,11 @@ $(document).ready(function() {
 
   // 現在のユーザーの属性情報を取得・表示
   getUserAttribute();
-});
 
-// 「送信」ボタン押下時
-$("#addScore").click(function(event) {
-  addScore();
+  // 「送信」ボタン押下時
+  $("#addScore").click(function(event) {
+    addScore();
+  });
 });
 
 /**
@@ -45,7 +45,6 @@ var getUserAttribute = function(){
     $("div#menu h3").text("ログインしてません");
   }
 };
-
 
 /**
  * スコアをLambdaに送信する
