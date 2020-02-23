@@ -64,7 +64,7 @@ var addScore = function(){
   var params = {
     FunctionName:"addWaccaScore",
     InvocationType:"RequestResponse",
-    Payload:scoreJson
+    Payload:payload
   };
 
   lambda.invoke( params,function(err,data) {
