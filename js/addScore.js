@@ -21,7 +21,7 @@ $(document).ready(function() {
   getUserAttribute();
 
   // 「送信」ボタン押下時
-  $("#addScore").click(function(event) {
+  $("#execute").click(function(event) {
     addScore();
   });
 });
@@ -51,17 +51,16 @@ var getUserAttribute = function(){
  */
 var addScore = function(){
 
-  //AWS.config.update({credentials: AWS.config.credentials ,region:"us-west-2"});
-
-  var scoreData = $("#scoreCsv").val();
-  //var context = Base64.encode(JSON.stringify( scoreData ));
+  var scoreJson = $("#scoreCsv").val();
+  // ユーザID設定
+  scoreJson.UserId = cognitoUser.username
 
   var lambda = new AWS.Lambda();
 
   var params = {
     FunctionName:"addWaccaScore",
     InvocationType:"RequestResponse",
-    Payload:scoreData
+    Payload:scoreJson
   };
 
   lambda.invoke( params,function(err,data) {

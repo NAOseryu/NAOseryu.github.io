@@ -17,7 +17,7 @@ $(document).ready(function() {
 	});
 
 	// 「ログイン」ボタン押下時
-	$("#login").click(function(event) {
+	$("#execute").click(function(event) {
     login();
 	});
 });
