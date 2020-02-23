@@ -20,10 +20,7 @@ $(document).ready(function() {
   // 現在のユーザーの属性情報を取得・表示
   getUserAttribute();
 
-  // 「送信」ボタン押下時
-  $("#execute").click(function(event) {
-    addScore();
-  });
+  getScore();
 });
 
 /**
@@ -38,7 +35,7 @@ var getUserAttribute = function(){
         console.log(err);
         $("div#menu h3").text("セッションの取得に失敗してます");
       } else {
-        $("div#menu h3").text(cognitoUser.username + "でログインしてます");
+        $("div#menu h3").text(cognitoUser.username + "さんのスコア");
       }
     });
   } else {
@@ -47,22 +44,18 @@ var getUserAttribute = function(){
 };
 
 /**
- * スコアをLambdaに送信する
+ * Lambdaからスコアを取得する
  */
-var addScore = function(){
-
-  //スコアデータ編集
-  var scoreObj = JSON.parse($("#scoreCsv").val());
-  // ユーザID設定
-  scoreObj.UserId = cognitoUser.username;
-  var scoreJson = JSON.stringify(scoreObj);
+var getScore = function(){
 
   var lambda = new AWS.Lambda();
 
+  var payload = "{\"UserId\":" + cognitoUser.username + "}"
+
   var params = {
-    FunctionName:"addWaccaScore",
+    FunctionName:"getWaccaScore",
     InvocationType:"RequestResponse",
-    Payload:scoreJson
+    Payload:payload
   };
 
   lambda.invoke( params,function(err,data) {
@@ -70,8 +63,16 @@ var addScore = function(){
       console.log(err,err.stack);
     } else {
       console.log(data);
-      // 送信成功の場合、スコア確認画面に遷移する
-      location.href = "/wacca/viewScore.html";
+      // 取得結果を表示
+      var dataTable = new Tabulator("#scoreTable", {
+        data:data,
+        layout:"fitColumns",
+        columns:[
+          {title:"MusicId", field:"MusicId"},
+          {title:"Difficulty", field:"Difficulty"},
+          {title:"Score", field:"Score"}
+        ],
+      })
     }
   });
 };
