@@ -54,9 +54,9 @@ var addScore = function(){
   //スコアデータ編集
   var scoreObj = JSON.parse($("#scoreJson").val());
   var scoreJson = JSON.stringify(scoreObj);
-  var payload = new Object();
+  // ユーザID追加
+  var payload = "{\"UserId\": \"" + cognitoUser.username + "\", \"Score\": " + scoreJson + "}";
   payload.Score = scoreJson;
-  // ユーザID設定
   payload.UserId = cognitoUser.username;
 
   var lambda = new AWS.Lambda();
