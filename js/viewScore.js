@@ -64,8 +64,9 @@ var getScore = function(){
     } else {
       console.log(data);
       // 取得結果を表示
+      var scoreJson = JSON.parse(data.Payload);
       var dataTable = new Tabulator("#scoreTable", {
-        data:data,
+        data:scoreJson,
         layout:"fitColumns",
         columns:[
           {title:"MusicId", field:"MusicId"},
