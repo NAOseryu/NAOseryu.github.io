@@ -54,7 +54,7 @@ var addScore = function(){
   var scoreJson = JSON.stringify($("#scoreCsv").val());
   console.log(scoreJson);
   // ユーザID設定
-  scoreJson.UserId = cognitoUser.username
+  scoreJson.UserId = cognitoUser.username;
   console.log(scoreJson);
 
   var lambda = new AWS.Lambda();
