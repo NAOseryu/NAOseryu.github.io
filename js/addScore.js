@@ -51,18 +51,18 @@ var getUserAttribute = function(){
  */
 var addScore = function(){
 
-  var scoreJson = JSON.stringify($("#scoreCsv").val());
-  console.log(scoreJson);
+  var scoreObj = JSON.parse($("#scoreCsv").val());
+  console.log(scoreObj);
   // ユーザID設定
-  scoreJson.UserId = cognitoUser.username;
-  console.log(scoreJson);
+  scoreObj.UserId = cognitoUser.username;
+  console.log(scoreObj);
 
   var lambda = new AWS.Lambda();
 
   var params = {
     FunctionName:"addWaccaScore",
     InvocationType:"RequestResponse",
-    Payload:scoreJson
+    Payload:scoreObj
   };
 
   lambda.invoke( params,function(err,data) {
