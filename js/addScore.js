@@ -51,6 +51,7 @@ var getUserAttribute = function(){
  */
 var addScore = function(){
 
+  //スコアデータ編集
   var scoreObj = JSON.parse($("#scoreCsv").val());
   console.log(scoreObj);
   // ユーザID設定
@@ -62,7 +63,7 @@ var addScore = function(){
   var params = {
     FunctionName:"addWaccaScore",
     InvocationType:"RequestResponse",
-    Payload:scoreObj
+    Payload:JSON.stringify(scoreObj);
   };
 
   lambda.invoke( params,function(err,data) {
