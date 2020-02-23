@@ -52,10 +52,12 @@ var getUserAttribute = function(){
 var addScore = function(){
 
   //スコアデータ編集
-  var scoreObj = JSON.parse($("#scoreCsv").val());
-  // ユーザID設定
-  scoreObj.UserId = cognitoUser.username;
+  var scoreObj = JSON.parse($("#scoreJson").val());
   var scoreJson = JSON.stringify(scoreObj);
+  var payload = new Object();
+  payload.Score = scoreJson;
+  // ユーザID設定
+  payload.UserId = cognitoUser.username;
 
   var lambda = new AWS.Lambda();
 

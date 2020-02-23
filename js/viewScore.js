@@ -70,7 +70,9 @@ var getScore = function(){
         layout:"fitColumns",
         columns:[
           {title:"MusicId", field:"MusicId"},
+          {title:"Title", field:"Title"},
           {title:"Difficulty", field:"Difficulty"},
+          {title:"Level", field:"Level"},
           {title:"Score", field:"Score"}
         ],
       })
