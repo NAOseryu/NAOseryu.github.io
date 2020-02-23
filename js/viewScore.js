@@ -50,7 +50,7 @@ var getScore = function(){
 
   var lambda = new AWS.Lambda();
 
-  var payload = "{\"UserId\":" + cognitoUser.username + "}"
+  var payload = "{\"UserId\":\"" + cognitoUser.username + "\"}"
 
   var params = {
     FunctionName:"getWaccaScore",
