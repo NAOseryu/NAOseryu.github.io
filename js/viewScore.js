@@ -65,7 +65,7 @@ var getScore = function(){
       console.log(data);
       // 取得結果を表示
       var scoreJson = JSON.parse(data.Payload);
-      var dataTable = new Tabulator("#scoreTable", {
+      var scoreTable = new Tabulator("#scoreTable", {
         data:scoreJson,
         layout:"fitColumns",
         columns:[
@@ -85,8 +85,8 @@ var getScore = function(){
  */
 function amFilter(boolEnable){
   if (boolEnable) {
-    table.setFilter("Score", "!=", 1000000);
+    scoreTable.setFilter("Score", "!=", 1000000);
   } else {
-    table.removeFilter("Score", "!=", 1000000);
+    scoreTable.removeFilter("Score", "!=", 1000000);
   }
 };
