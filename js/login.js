@@ -3,11 +3,18 @@ var poolData = {
   UserPoolId : 'ap-northeast-1_5ynbUsboz',
   ClientId : '4so6sevjpqoqmmhh3ki24r11fn'
 };
+  var userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
 
 /**
  * 画面読み込み時の処理
  */
 $(document).ready(function() {
+
+  // Amazon Cognito 認証情報プロバイダーの初期化
+	AWS.config.region = 'ap-northeast-1'; // リージョン
+  AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+    IdentityPoolId: 'ap-northeast-1:221fd836-a94e-4135-b98c-d951bf2186c7'
+	});
 
 	// 「ログイン」ボタン押下時
 	$("#execute").click(function(event) {
@@ -26,14 +33,6 @@ var login = function() {
   if (!userId | !password) {
   	return false;
   }
-
-  var userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
-
-  // Amazon Cognito 認証情報プロバイダーの初期化
-	AWS.config.region = 'ap-northeast-1'; // リージョン
-  AWS.config.credentials = new AWS.CognitoIdentityCredentials({
-    IdentityPoolId: 'ap-northeast-1:221fd836-a94e-4135-b98c-d951bf2186c7'
-	});
 
   // 認証データの作成
   var authenticationData = {
