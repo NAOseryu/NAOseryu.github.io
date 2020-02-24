@@ -56,8 +56,6 @@ var addScore = function(){
   var scoreJson = JSON.stringify(scoreObj);
   // ユーザID追加
   var payload = "{\"UserId\": \"" + cognitoUser.username + "\", \"Score\": " + scoreJson + "}";
-  payload.Score = scoreJson;
-  payload.UserId = cognitoUser.username;
 
   var lambda = new AWS.Lambda();
 
