@@ -69,10 +69,10 @@ var getScore = function(){
         data:scoreJson,
         layout:"fitColumns",
         columns:[
-          {title:"Title", field:"Title"},
-          {title:"Difficulty", field:"Difficulty"},
-          {title:"Level", field:"Level"},
-          {title:"Score", field:"Score"}
+          {title:"曲名", field:"Title"},
+          {title:"難易度", field:"Difficulty"},
+          {title:"レベル", field:"Level"},
+          {title:"スコア", field:"Score"}
         ],
       })
     }
