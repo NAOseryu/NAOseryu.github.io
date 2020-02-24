@@ -41,6 +41,8 @@ var regster = function() {
     	alert(err);
 		return;
     } else {
+        // 成功したらログインも実行
+        login();
       	// 登録成功の場合、登録成功画面に遷移する
         location.href = "https://naoseryu.github.io/wacca/registerSuccess.html";
     }
