@@ -18,16 +18,21 @@
 <script src="../js/regster.js"></script>
 <script src="../js/login.js"></script>
 
-<body>
+<body style="font-family:'メイリオ',Meiryo;">
 
   <div id="regster">
     <h3>ユーザ登録</h3>
     <form name='regster'>
-      <span style="display: inline-block; width: 150px;">User ID</span>
-        <input type="text" id="userId" placeholder="User ID">
+      <font  size=2 style="font-weight: bold; color: red">※重要なパスワードを使い回さないようにお願いします</font><br/>
+      <br/>
+      <span style="display: inline-block; width: 150px;">ユーザID</span>
+        <input type="text" id="userId" placeholder="ユーザID">
         <br/>
         <span style="display: inline-block; width: 150px;">Password</span>
         <input type="password" id="password" placeholder="Password">
+        <br/>
+        <font size=2>(6文字以上、半角英数、記号)</font>
+
         <br/><br/>
       <input type="button" id="regsterExecute" value="登録">
     </form>
