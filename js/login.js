@@ -3,7 +3,6 @@ var poolData = {
   UserPoolId : 'ap-northeast-1_5ynbUsboz',
   ClientId : '4so6sevjpqoqmmhh3ki24r11fn'
 };
-var userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
 
 /**
  * 画面読み込み時の処理
@@ -27,6 +26,8 @@ var login = function() {
   if (!userId | !password) {
   	return false;
   }
+
+  var userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
 
   // Amazon Cognito 認証情報プロバイダーの初期化
 	AWS.config.region = 'ap-northeast-1'; // リージョン
