@@ -33,8 +33,18 @@ try {
     results.push(tmpResult)
   }
   let resultJson = JSON.stringify(results);
-  console.log(resultJson);
-  alert(resultJson);
+
+  let textBox = document.createElement("textarea");
+  textBox.setAttribute("id", "target");
+  textBox.setAttribute("type", "hidden");
+  textBox.textContent = resultJson;
+  document.body.appendChild(textBox);
+
+  textBox.select();
+  document.execCommand('copy');
+  document.body.removeChild(textBox);
+
+  alert("スコアデータをクリップボードにコピーしました");
 } catch (e) {
   alert(e);
 }
