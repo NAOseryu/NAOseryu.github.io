@@ -1,9 +1,9 @@
 // ユーザープールの設定
-const poolData = {
+var poolData = {
   UserPoolId : 'ap-northeast-1_5ynbUsboz',
   ClientId : '4so6sevjpqoqmmhh3ki24r11fn'
 };
-const userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
+var userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
 
 /**
  * 画面読み込み時の処理
