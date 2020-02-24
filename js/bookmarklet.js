@@ -10,7 +10,6 @@ try {
   let results = [];
   let tmpScore, tmpResult;
   let inputs = $('input[name="musicId"]');
-  console.log(inputs);
   let nodes = $('[class*="muuri-item"]');
 
   for (let i = 1; i <= nodes.length; i++) {
