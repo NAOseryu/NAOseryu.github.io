@@ -69,13 +69,26 @@ var getScore = function(){
         data:scoreJson,
         layout:"fitColumns",
         columns:[
-          {title:"MusicId", field:"MusicId", visible:true},
+          {title:"MusicId", field:"MusicId", visible:false},
           {title:"曲名", field:"Title"},
-          {title:"難易度", field:"Difficulty"},
-          {title:"レベル", field:"Level"},
-          {title:"スコア", field:"Score"}
+          {title:"難易度", field:"Difficulty", width:100},
+          {title:"レベル", field:"Level", width:100},
+          {title:"スコア", field:"Score", width:100}
         ],
       })
     }
   });
 };
+
+/**
+ * 理論理フィルタ
+ */
+var amFilter = function(boolEnable){
+  $("#notAM").click(function(event) {
+    if (boolEnable) {
+      table.setFilter("Score", "!=", 1000000);
+    } else {
+      table.removeFilter("Score", "!=", 1000000);
+    }
+  });
+});
