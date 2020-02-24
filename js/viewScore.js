@@ -69,6 +69,7 @@ var getScore = function(){
         data:scoreJson,
         layout:"fitColumns",
         columns:[
+          {title:"MusicId", field:"MusicId", visible:true},
           {title:"曲名", field:"Title"},
           {title:"難易度", field:"Difficulty"},
           {title:"レベル", field:"Level"},
