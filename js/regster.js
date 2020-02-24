@@ -17,7 +17,7 @@ $(document).ready(function() {
 	});
 
 	// 「登録」ボタン押下時
-	$("#regster").click(function(event) {
+	$("#regsterExecute").click(function(event) {
     regster();
 	});
 });
