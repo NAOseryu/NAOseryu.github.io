@@ -83,7 +83,7 @@ var getScore = function(){
 /**
  * 理論理フィルタ
  */
-var amFilter = function(boolEnable){
+function amFilter(boolEnable){
   if (boolEnable) {
     table.setFilter("Score", "!=", 1000000);
   } else {
