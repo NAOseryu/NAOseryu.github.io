@@ -84,11 +84,9 @@ var getScore = function(){
  * 理論理フィルタ
  */
 var amFilter = function(boolEnable){
-  $("#notAM").click(function(event) {
-    if (boolEnable) {
-      table.setFilter("Score", "!=", 1000000);
-    } else {
-      table.removeFilter("Score", "!=", 1000000);
-    }
-  });
-});
+  if (boolEnable) {
+    table.setFilter("Score", "!=", 1000000);
+  } else {
+    table.removeFilter("Score", "!=", 1000000);
+  }
+};
