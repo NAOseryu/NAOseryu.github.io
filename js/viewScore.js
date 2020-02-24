@@ -69,7 +69,6 @@ var getScore = function(){
         data:scoreJson,
         layout:"fitColumns",
         columns:[
-          {title:"MusicId", field:"MusicId"},
           {title:"Title", field:"Title"},
           {title:"Difficulty", field:"Difficulty"},
           {title:"Level", field:"Level"},
