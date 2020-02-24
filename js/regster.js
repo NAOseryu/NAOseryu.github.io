@@ -19,8 +19,6 @@ $(document).ready(function() {
 	// 「登録」ボタン押下時
 	$("#regsterExecute").click(function(event) {
     regster();
-    // 成功したらログインも実行
-    login();
 	});
 });
 
@@ -43,8 +41,10 @@ var regster = function() {
     	alert(err);
 		return;
     } else {
-      	// 登録成功の場合、登録成功画面に遷移する
-        location.href = "https://naoseryu.github.io/wacca/registerSuccess.html";
+      // 成功したらログインも実行
+      login();
+    	// 登録成功の場合、登録成功画面に遷移する
+      location.href = "https://naoseryu.github.io/wacca/registerSuccess.html";
     }
   });
 }
