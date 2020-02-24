@@ -65,7 +65,7 @@ var getScore = function(){
       console.log(data);
       // 取得結果を表示
       var scoreJson = JSON.parse(data.Payload);
-      var scoreTable = new Tabulator("#scoreTable", {
+      scoreTable = new Tabulator("#scoreTable", {
         data:scoreJson,
         layout:"fitColumns",
         columns:[
