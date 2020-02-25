@@ -19,6 +19,8 @@
 <link href="https://unpkg.com/tabulator-tables@4.1.4/dist/css/tabulator.min.css" rel="stylesheet">
 <script type="text/javascript" src="https://unpkg.com/tabulator-tables@4.1.4/dist/js/tabulator.min.js"></script>
 
+<link rel="stylesheet" type="text/css" href="../css/base.css">
+
 <script src="../js/base64.min.js"></script>
 <script src="../js/viewScore.js"></script>
 
@@ -27,7 +29,16 @@
    <h3></h3>
   </div>
 
-  <input type="checkbox" name="notAM" onclick="amFilter(this.checked)">未AM
+  <div id="scoreFilter" onclick="scoreFilter()" class="filter">
+    スコアフィルター</br>
+    <input type="checkbox" name="A" checked="checked">A以下｜
+    <input type="checkbox" name="AA" checked="checked">AA｜
+    <input type="checkbox" name="AAA" checked="checked">AAA｜
+    <input type="checkbox" name="S" checked="checked">S｜
+    <input type="checkbox" name="SS" checked="checked">SS｜
+    <input type="checkbox" name="SSS" checked="checked">SSS｜
+    <input type="checkbox" name="AM" checked="checked">AM
+  </div>
 
   <div id="scoreTable"></div>
 </body>

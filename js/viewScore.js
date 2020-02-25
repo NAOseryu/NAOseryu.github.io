@@ -81,12 +81,54 @@ var getScore = function(){
 };
 
 /**
- * 理論理フィルタ
+ * スコアフィルタ
  */
-function amFilter(boolEnable){
-  if (boolEnable) {
-    scoreTable.setFilter("Score", "!=", 1000000);
+function scoreFilter(){
+  //フィルターリセット
+  table.clearFilter();
+  if (document.A.checked) {
+    scoreTable.setFilter("Score", "<", 800000);
   } else {
-    scoreTable.removeFilter("Score", "!=", 1000000);
+    scoreTable.setFilter("Score", ">=", 800000);
+  }
+  if (document.AA.checked) {
+    scoreTable.setFilter("Score", ">=", 800000);
+    scoreTable.setFilter("Score", "<", 850000);
+  } else {
+    scoreTable.setFilter("Score", "<", 800000);
+    scoreTable.setFilter("Score", ">=", 850000);
+  }
+  if (document.AAA.checked) {
+    scoreTable.setFilter("Score", ">=", 850000);
+    scoreTable.setFilter("Score", "<", 900000);
+  } else {
+    scoreTable.setFilter("Score", "<", 850000);
+    scoreTable.setFilter("Score", ">=", 900000);
+  }
+  if (document.S.checked) {
+    scoreTable.setFilter("Score", ">=", 900000);
+    scoreTable.setFilter("Score", "<", 950000);
+  } else {
+    scoreTable.setFilter("Score", "<", 900000);
+    scoreTable.setFilter("Score", ">=", 950000);
+  }
+  if (document.SS.checked) {
+    scoreTable.setFilter("Score", ">=", 950000);
+    scoreTable.setFilter("Score", "<", 980000);
+  } else {
+    scoreTable.setFilter("Score", "<", 950000);
+    scoreTable.setFilter("Score", ">=", 980000);
+  }
+  if (document.SSS.checked) {
+    scoreTable.setFilter("Score", ">=", 980000);
+    scoreTable.setFilter("Score", "<", 1000000);
+  } else {
+    scoreTable.setFilter("Score", "<", 980000);
+    scoreTable.setFilter("Score", ">=", 1000000);
+  }
+  if (document.AM.checked) {
+    scoreTable.setFilter("Score", "=", 1000000);
+  } else {
+    scoreTable.setFilter("Score", "!=", 1000000);
   }
 };
