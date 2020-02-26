@@ -64,7 +64,7 @@ var getScore = function(){
     } else {
       console.log(data);
       // 取得結果を表示
-      var scoreJson = JSON.parse(data.Payload);
+      scoreJson = JSON.parse(data.Payload);
       scoreTable = new Tabulator("#scoreTable", {
         data:scoreJson,
         layout:"fitColumns",
@@ -84,51 +84,46 @@ var getScore = function(){
  * スコアフィルタ
  */
 function scoreFilter(){
-  //フィルターリセット
-  table.clearFilter();
-  if (document.A.checked) {
-    scoreTable.setFilter("Score", "<", 800000);
-  } else {
-    scoreTable.setFilter("Score", ">=", 800000);
+  //表示用スコア格納先
+  let dispScore = [];
+  let AAA = document.getElementsByName("AAA");
+  let S = document.getElementsByName("S");
+  let SS = document.getElementsByName("SS);
+  let SSS = document.getElementsByName("SSS");
+  let AM = document.getElementsByName("AM");
+  if (AAA[0].checked) {
+    let filterScore = scoreJson.filter(function(item, index){
+      if (item.Score < 900000) return true;
+    });
+    Array.prototype.push.apply(dispScore, filterScore);
   }
-  if (document.AA.checked) {
-    scoreTable.setFilter("Score", ">=", 800000);
-    scoreTable.setFilter("Score", "<", 850000);
-  } else {
-    scoreTable.setFilter("Score", "<", 800000);
-    scoreTable.setFilter("Score", ">=", 850000);
+
+  if (S[0].checked) {
+    let filterScore = scoreJson.filter(function(item, index){
+      if (item.Score >= 900000 && item.Score < 950000) return true;
+    });
+    Array.prototype.push.apply(dispScore, filterScore);
   }
-  if (document.AAA.checked) {
-    scoreTable.setFilter("Score", ">=", 850000);
-    scoreTable.setFilter("Score", "<", 900000);
-  } else {
-    scoreTable.setFilter("Score", "<", 850000);
-    scoreTable.setFilter("Score", ">=", 900000);
+
+  if (SS[0].checked) {
+    let filterScore = scoreJson.filter(function(item, index){
+      if (item.Score >= 950000 && item.Score < 980000) return true;
+    });
+    Array.prototype.push.apply(dispScore, filterScore);
   }
-  if (document.S.checked) {
-    scoreTable.setFilter("Score", ">=", 900000);
-    scoreTable.setFilter("Score", "<", 950000);
-  } else {
-    scoreTable.setFilter("Score", "<", 900000);
-    scoreTable.setFilter("Score", ">=", 950000);
+
+  if (SSS[0].checked) {
+    let filterScore = scoreJson.filter(function(item, index){
+      if (item.Score >= 980000 && item.Score < 1000000) return true;
+    });
+    Array.prototype.push.apply(dispScore, filterScore);
   }
-  if (document.SS.checked) {
-    scoreTable.setFilter("Score", ">=", 950000);
-    scoreTable.setFilter("Score", "<", 980000);
-  } else {
-    scoreTable.setFilter("Score", "<", 950000);
-    scoreTable.setFilter("Score", ">=", 980000);
+
+  if (AM[0].checked) {
+    let filterScore = scoreJson.filter(function(item, index){
+    if (item.Score == 1000000) return true;
+    });
+    Array.prototype.push.apply(dispScore, filterScore);
   }
-  if (document.SSS.checked) {
-    scoreTable.setFilter("Score", ">=", 980000);
-    scoreTable.setFilter("Score", "<", 1000000);
-  } else {
-    scoreTable.setFilter("Score", "<", 980000);
-    scoreTable.setFilter("Score", ">=", 1000000);
-  }
-  if (document.AM.checked) {
-    scoreTable.setFilter("Score", "=", 1000000);
-  } else {
-    scoreTable.setFilter("Score", "!=", 1000000);
-  }
+  scoreTable.setData(dispScore);
 };
