@@ -88,9 +88,9 @@ function scoreFilter(){
   let dispScore = [];
   let AAA = document.getElementsByName("AAA");
   let S = document.getElementsByName("S");
-  let SS = document.getElementsByName("SS);
+  let SS = document.getElementsByName("SS");
   let SSS = document.getElementsByName("SSS");
-  let AM = document.getElementsByName("AM");
+  let MASTER = document.getElementsByName("MASTER");
   if (AAA[0].checked) {
     let filterScore = scoreJson.filter(function(item, index){
       if (item.Score < 900000) return true;
@@ -119,7 +119,7 @@ function scoreFilter(){
     Array.prototype.push.apply(dispScore, filterScore);
   }
 
-  if (AM[0].checked) {
+  if (MASTER[0].checked) {
     let filterScore = scoreJson.filter(function(item, index){
     if (item.Score == 1000000) return true;
     });
