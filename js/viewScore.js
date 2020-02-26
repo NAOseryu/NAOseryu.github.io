@@ -70,9 +70,9 @@ var getScore = function(){
         layout:"fitColumns",
         columns:[
           {title:"MusicId", field:"MusicId", visible:false},
-          {title:"曲名", field:"Title"},
+          {title:"曲名", field:"Title", width:470},
           {title:"難易度", field:"Difficulty", width:100},
-          {title:"レベル", field:"Level", width:100},
+          {title:"レベル", field:"Level", width:80},
           {title:"スコア", field:"Score", width:100}
         ],
       })
