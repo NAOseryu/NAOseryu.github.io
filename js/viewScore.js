@@ -20,7 +20,11 @@ $(document).ready(function() {
   // 現在のユーザーの属性情報を取得・表示
   getUserAttribute();
 
+  // Lambdaからスコアを取得する
   getScore();
+
+  // スコアにフィルタをかける
+  scoreTableFilter();
 });
 
 /**
@@ -81,49 +85,95 @@ var getScore = function(){
 };
 
 /**
- * スコアフィルタ
+ * フィルタ
  */
-function scoreFilter(){
+function scoreTableFilter(){
   //表示用スコア格納先
   let dispScore = [];
+
+  dispScore = diffFilter();
+
+  dispScore = scoreFilter(dispScore);
+
+  scoreTable.setData(dispScore);
+}
+
+/**
+ * 難易度フィルタ
+ */
+function diff_Filter(){
+  let return = [];
+  let NORMAL = document.getElementsByName("NORMAL");
+  let HARD = document.getElementsByName("HARD");
+  let EXPERT = document.getElementsByName("EXPERT");
+
+  if (NORMAL[0].checked) {
+    let filterScore = scoreJson.filter(function(item, index){
+      if (item.Difficulty == "NORMAL") return true;
+    });
+    Array.prototype.push.apply(return, filterScore);
+  }
+
+  if (HARD[0].checked) {
+    let filterScore = scoreJson.filter(function(item, index){
+      if (item.Difficulty == "HARD") return true;
+    });
+    Array.prototype.push.apply(return, filterScore);
+  }
+
+  if (EXPERT[0].checked) {
+    let filterScore = scoreJson.filter(function(item, index){
+      if (item.Difficulty == "EXPERT") return true;
+    });
+    Array.prototype.push.apply(return, filterScore);
+  }
+}
+
+
+/**
+ * スコアフィルタ
+ */
+function scoreFilter(dispScore){
+  let return = [];
   let AAA = document.getElementsByName("AAA");
   let S = document.getElementsByName("S");
   let SS = document.getElementsByName("SS");
   let SSS = document.getElementsByName("SSS");
   let MASTER = document.getElementsByName("MASTER");
+
   if (AAA[0].checked) {
-    let filterScore = scoreJson.filter(function(item, index){
+    let filterScore = dispScore.filter(function(item, index){
       if (item.Score < 900000) return true;
     });
-    Array.prototype.push.apply(dispScore, filterScore);
+    Array.prototype.push.apply(return, filterScore);
   }
 
   if (S[0].checked) {
-    let filterScore = scoreJson.filter(function(item, index){
+    let filterScore = dispScore.filter(function(item, index){
       if (item.Score >= 900000 && item.Score < 950000) return true;
     });
-    Array.prototype.push.apply(dispScore, filterScore);
+    Array.prototype.push.apply(return, filterScore);
   }
 
   if (SS[0].checked) {
-    let filterScore = scoreJson.filter(function(item, index){
+    let filterScore = dispScore.filter(function(item, index){
       if (item.Score >= 950000 && item.Score < 980000) return true;
     });
-    Array.prototype.push.apply(dispScore, filterScore);
+    Array.prototype.push.apply(return, filterScore);
   }
 
   if (SSS[0].checked) {
-    let filterScore = scoreJson.filter(function(item, index){
+    let filterScore = dispScore.filter(function(item, index){
       if (item.Score >= 980000 && item.Score < 1000000) return true;
     });
-    Array.prototype.push.apply(dispScore, filterScore);
+    Array.prototype.push.apply(return, filterScore);
   }
 
   if (MASTER[0].checked) {
-    let filterScore = scoreJson.filter(function(item, index){
+    let filterScore = dispScore.filter(function(item, index){
     if (item.Score == 1000000) return true;
     });
-    Array.prototype.push.apply(dispScore, filterScore);
+    Array.prototype.push.apply(return, filterScore);
   }
-  scoreTable.setData(dispScore);
+  retuen return;
 };

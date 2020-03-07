@@ -1,4 +1,8 @@
 .filter {
-    font-size: 90%;
-    font-weight: bold;
-  }
+  font-size: 90%;
+  font-weight: bold;
+}
+
+.diff_normal { color: #009DE6; }
+.diff_hard { color: #FED131; }
+.diff_expert { color: #FA0C98; }
