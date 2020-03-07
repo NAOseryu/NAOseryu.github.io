@@ -96,13 +96,13 @@ function scoreTableFilter(){
   dispScore = scoreFilter(dispScore);
 
   scoreTable.setData(dispScore);
-}
+};
 
 /**
  * 難易度フィルタ
  */
 function diff_Filter(){
-  let return = [];
+  let returnScore = [];
   let NORMAL = document.getElementsByName("NORMAL");
   let HARD = document.getElementsByName("HARD");
   let EXPERT = document.getElementsByName("EXPERT");
@@ -111,30 +111,31 @@ function diff_Filter(){
     let filterScore = scoreJson.filter(function(item, index){
       if (item.Difficulty == "NORMAL") return true;
     });
-    Array.prototype.push.apply(return, filterScore);
+    Array.prototype.push.apply(returnScore, filterScore);
   }
 
   if (HARD[0].checked) {
     let filterScore = scoreJson.filter(function(item, index){
       if (item.Difficulty == "HARD") return true;
     });
-    Array.prototype.push.apply(return, filterScore);
+    Array.prototype.push.apply(returnScore, filterScore);
   }
 
   if (EXPERT[0].checked) {
     let filterScore = scoreJson.filter(function(item, index){
       if (item.Difficulty == "EXPERT") return true;
     });
-    Array.prototype.push.apply(return, filterScore);
+    Array.prototype.push.apply(returnScore, filterScore);
   }
-}
+  return returnScore;
+};
 
 
 /**
  * スコアフィルタ
  */
 function scoreFilter(dispScore){
-  let return = [];
+  let returnScore = [];
   let AAA = document.getElementsByName("AAA");
   let S = document.getElementsByName("S");
   let SS = document.getElementsByName("SS");
@@ -145,35 +146,35 @@ function scoreFilter(dispScore){
     let filterScore = dispScore.filter(function(item, index){
       if (item.Score < 900000) return true;
     });
-    Array.prototype.push.apply(return, filterScore);
+    Array.prototype.push.apply(returnScore, filterScore);
   }
 
   if (S[0].checked) {
     let filterScore = dispScore.filter(function(item, index){
       if (item.Score >= 900000 && item.Score < 950000) return true;
     });
-    Array.prototype.push.apply(return, filterScore);
+    Array.prototype.push.apply(returnScore, filterScore);
   }
 
   if (SS[0].checked) {
     let filterScore = dispScore.filter(function(item, index){
       if (item.Score >= 950000 && item.Score < 980000) return true;
     });
-    Array.prototype.push.apply(return, filterScore);
+    Array.prototype.push.apply(returnScore, filterScore);
   }
 
   if (SSS[0].checked) {
     let filterScore = dispScore.filter(function(item, index){
       if (item.Score >= 980000 && item.Score < 1000000) return true;
     });
-    Array.prototype.push.apply(return, filterScore);
+    Array.prototype.push.apply(returnScore, filterScore);
   }
 
   if (MASTER[0].checked) {
     let filterScore = dispScore.filter(function(item, index){
     if (item.Score == 1000000) return true;
     });
-    Array.prototype.push.apply(return, filterScore);
+    Array.prototype.push.apply(returnScore, filterScore);
   }
-  retuen return;
+  return returnScore;
 };
