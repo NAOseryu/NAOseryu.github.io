@@ -101,7 +101,7 @@ var dispDiff = function(cell){ // 引数は難易度
     if(difficulty == "EXPERT") {
         cell.getElement().style.backgroundColor="#FA0C98";
     }
-    return val; // 表示する値を返す
+    return difficulty; // 表示する値を返す
 }
 
 /**
