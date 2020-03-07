@@ -101,7 +101,7 @@ function scoreTableFilter(){
 /**
  * 難易度フィルタ
  */
-function diff_Filter(){
+function diffFilter(){
   let returnScore = [];
   let NORMAL = document.getElementsByName("NORMAL");
   let HARD = document.getElementsByName("HARD");
