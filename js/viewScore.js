@@ -77,11 +77,11 @@ var getScore = function(){
           {title:"スコア", field:"Score", width:100}
         ],
       })
+
+      // スコアにフィルタをかける
+      scoreTableFilter();
     }
   });
-
-  // スコアにフィルタをかける
-  scoreTableFilter();
 };
 
 /**
