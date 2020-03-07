@@ -76,6 +76,9 @@ var getScore = function(){
           {title:"レベル", field:"Level", width:80},
           {title:"スコア", field:"Score", width:100}
         ],
+        initialSort:[
+          {column:"Title", dir:"asc"},
+        ]
       })
 
       // スコアにフィルタをかける
