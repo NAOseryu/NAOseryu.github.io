@@ -72,7 +72,7 @@ var getScore = function(){
         columns:[
           {title:"MusicId", field:"MusicId", visible:false},
           {title:"曲名", field:"Title", width:470},
-          {title:"難易度", field:"Difficulty", width:100},
+          {title:"難易度", field:"Difficulty", align:"center", formatter:dispDiff, width:100},
           {title:"レベル", field:"Level", width:80},
           {title:"スコア", field:"Score", width:100}
         ],
@@ -86,6 +86,23 @@ var getScore = function(){
     }
   });
 };
+
+/**
+ * 難易度セルのフォーマット
+ */
+var dispDiff = function(cell){ // 引数は難易度
+    let difficulty = cell.getValue(); // セルの値を取得
+    if(difficulty == "NORMAL") {
+        cell.getElement().style.backgroundColor="#009DE6";
+    }
+    if(difficulty == "HARD") {
+        cell.getElement().style.backgroundColor="#FED131";
+    }
+    if(difficulty == "EXPERT") {
+        cell.getElement().style.backgroundColor="#FA0C98";
+    }
+    return val; // 表示する値を返す
+}
 
 /**
  * フィルタ
