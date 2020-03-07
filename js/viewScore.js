@@ -22,9 +22,6 @@ $(document).ready(function() {
 
   // Lambdaからスコアを取得する
   getScore();
-
-  // スコアにフィルタをかける
-  scoreTableFilter();
 });
 
 /**
@@ -82,6 +79,9 @@ var getScore = function(){
       })
     }
   });
+
+  // スコアにフィルタをかける
+  scoreTableFilter();
 };
 
 /**
