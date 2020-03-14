@@ -69,6 +69,7 @@ var getScore = function(){
       scoreTable = new Tabulator("#scoreTable", {
         data:scoreJson,
         layout:"fitColumns",
+        movableColumns:true,
         columns:[
           {title:"MusicId", field:"MusicId", visible:false},
           {title:"曲名", field:"Title", width:470},
@@ -78,6 +79,7 @@ var getScore = function(){
         ],
         initialSort:[
           {column:"Title", dir:"asc"},
+          {column:"Difficulty", dir:"asc"},
         ]
       })
 
@@ -116,6 +118,10 @@ function scoreTableFilter(){
   dispScore = scoreFilter(dispScore);
 
   scoreTable.setData(dispScore);
+
+  // 件数表示用
+  let dataCount = Object.keys(dispScore).length
+  $("div#dataCount").text(dataCount + "件");
 };
 
 /**
