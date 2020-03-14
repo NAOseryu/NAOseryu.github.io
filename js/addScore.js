@@ -22,6 +22,7 @@ $(document).ready(function() {
 
   // 「送信」ボタン押下時
   $("#execute").click(function(event) {
+    $("font#sending").text("送信中。。。");
     addScore();
   });
 });
@@ -68,6 +69,7 @@ var addScore = function(){
   lambda.invoke( params,function(err,data) {
     if(err) {
       console.log(err,err.stack);
+      $("font#sending").text("");
     } else {
       console.log(data);
       // 送信成功の場合、スコア確認画面に遷移する
