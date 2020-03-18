@@ -47,7 +47,8 @@ var getData = function() {
 // テキストで出力
 var downloadText = function(results) {
   let resultJson = JSON.stringify(results);
-  let blob = new Blob([ resultJson ], { "type" : "text/plain" });
+  const bom = new Uint8Array([0xEF, 0xBB, 0xBF]);
+  let blob = new Blob([bom, resultJson], { "type" : "text/plain" });
   let link = document.createElement('a');
   link.href = URL.createObjectURL(blob);
   link.download = 'wacca_playdata.txt';
