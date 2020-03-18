@@ -73,9 +73,10 @@ var getScore = function(){
         columns:[
           {title:"MusicId", field:"MusicId", visible:false},
           {title:"曲名", field:"Title", width:470},
-          {title:"難易度", field:"Difficulty", align:"center", formatter:dispDiff, width:100},
-          {title:"レベル", field:"Level", width:80},
-          {title:"スコア", field:"Score", width:100}
+          {title:"難易度", field:"Difficulty", align:"center", formatter:dispDiff, width:77},
+          {title:"レベル", field:"Level", width:77},
+          {title:"スコア", field:"Score", width:77},
+          {title:"プレイ回数", field:"PlayCount", width:105}
         ],
         initialSort:[
           {column:"Title", dir:"asc"},
