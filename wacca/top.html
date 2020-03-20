@@ -7,16 +7,16 @@
 </head>
 
 <!-- Amazon Cognito用 -->
-<script src="/js/jsbn.js"></script>
-<script src="/js/jsbn2.js"></script>
-<script src="/js/sjcl.js"></script>
-<script src="/js/amazon-cognito-identity.min.js"></script>
+<script src="../js/jsbn.js"></script>
+<script src="../js/jsbn2.js"></script>
+<script src="../js/sjcl.js"></script>
+<script src="../js/amazon-cognito-identity.min.js"></script>
 <!-- AWS SDK -->
 <script src="https://sdk.amazonaws.com/js/aws-sdk-2.624.0.min.js"></script>
 <!-- jquery用 -->
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 
-<script src="/js/top.js"></script>
+<script src="../js/top.js"></script>
 
 <body style="font-family:'メイリオ',Meiryo;">
   <h1 style="font-size: 150%;">WACCAスコアツール</h1>
@@ -27,15 +27,6 @@
    <h3></h3>
   </div>
 
-  <a href= "/wacca/register.html" >ユーザ登録はこちら</a></br>
-  </br>
-  <a href= "/wacca/login.html" >ログインはこちら</a></br>
-  </br>
-  <a href= "/wacca/addScore.html" >スコア登録はこちら</a></br>
-  </br>
-  <a href= "/wacca/viewScore.html" >スコア確認はこちら</a></br>
-  </br>
-
   <font size=2>
     <div style="font-weight: bold;">
       ■できること </br>
@@ -44,6 +35,20 @@
       ・各項目でのソート </br>
       ・難易度、スコアでの絞り込み </br>
     </div>
+    <a href= "../wacca/viewScore.html?user=n-a-o" >サンプル</a></br>
+  </font>
+
+  </br>
+  <a href= "/wacca/register.html" >ユーザ登録はこちら</a></br>
+  </br>
+  <a href= "/wacca/login.html" >ログインはこちら</a></br>
+  </br>
+  <a href= "/wacca/addScore.html" >スコア登録はこちら</a></br>
+  </br>
+  <a href= "javascript:window.location.href='https://naoseryu.github.io/wacca/viewScore?user='+cognitoUser.username;" >スコア確認はこちら</a></br>
+  </br>
+
+  <font size=2>
     <h4>■使い方</h4>
     1：このツールにユーザ登録</br>
     2：このツールにログイン</br>
@@ -64,7 +69,7 @@
     <font style="font-weight: bold; color: red">
       ・ユーザ管理にAWSのサービスを使用してますが使い方あってるかわからない(ガバ)ので重要な情報は入力しないでください</br>
     </font>
-    ・PCのChromeで動作確認してます。他では動くかわかりません。</br>
+    ・PCのChromeで動作確認してます。他では動くかわかりません。たぶんIEはダメです</br>
     ・開発中でデータいじったりするので、突然データが消えたり、ユーザが消えたりするかもしれません。ごめんなさい。</br>
   </font>
 </body>
