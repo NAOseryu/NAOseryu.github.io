@@ -110,13 +110,15 @@ var dispDiff = function(cell){ // 引数は難易度
 /**
  * フィルタ
  */
-function scoreTableFilter(){
+var scoreTableFilter = function(){
   //表示用スコア格納先
   let dispScore = [];
 
   dispScore = diffFilter();
 
   dispScore = scoreFilter(dispScore);
+
+  dispScore = levelFilter(dispScore);
 
   scoreTable.setData(dispScore);
 
@@ -128,7 +130,7 @@ function scoreTableFilter(){
 /**
  * 難易度フィルタ
  */
-function diffFilter(){
+var diffFilter = function(){
   let returnScore = [];
   let NORMAL = document.getElementsByName("NORMAL");
   let HARD = document.getElementsByName("HARD");
@@ -161,7 +163,7 @@ function diffFilter(){
 /**
  * スコアフィルタ
  */
-function scoreFilter(dispScore){
+var scoreFilter = function(dispScore){
   let returnScore = [];
   let AAA = document.getElementsByName("AAA");
   let S = document.getElementsByName("S");
@@ -205,3 +207,29 @@ function scoreFilter(dispScore){
   }
   return returnScore;
 };
+
+/**
+ * レベルフィルタ
+ */
+var levelFilter = function(dispScore){
+  let returnScore = [];
+  let levelFilter = document.getElementsByName("levelFilter");
+
+  for (let i = 0; i < levelFilter.length; i++) {
+      if (levelFilter[i].checked) {
+      let filterScore = dispScore.filter(function(item, index){
+      if (item.Level == i + 1) return true;
+      });
+      Array.prototype.push.apply(returnScore, filterScore);
+    }
+  }
+  return returnScore;
+};
+
+// フィルターごとのチェックON・OFF
+var change_all = function(type, sw) {
+  let types = document.getElementsByName(type);
+  types.forEach((item) => {
+    item.checked = sw;
+  });
+}
