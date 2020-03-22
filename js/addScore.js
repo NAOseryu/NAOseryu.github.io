@@ -65,7 +65,7 @@ var addScore = function(){
     } else {
       console.log(data);
       // 送信成功の場合、スコア確認画面に遷移する
-      location.href = "/wacca/viewScore.html?" + cognitoUser.username;
+      location.href = "/wacca/viewScore.html?user=" + cognitoUser.username;
     }
   });
 };
