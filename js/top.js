@@ -1,11 +1,3 @@
-// ユーザープールの設定
-var poolData = {
-  UserPoolId : 'ap-northeast-1_5ynbUsboz',
-  ClientId : '4so6sevjpqoqmmhh3ki24r11fn'
-};
-var userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
-const cognitoUser = userPool.getCurrentUser();  // 現在のユーザー
-
 /**
  * 画面読み込み時の処理
  */
