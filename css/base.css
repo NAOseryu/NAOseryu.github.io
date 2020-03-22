@@ -1,3 +1,45 @@
+header {
+    box-shadow: 0 3px 3px rgba(0,0,0,0.4);
+    background-color: #fed131;
+    color: #fcfcfc;
+    height: 40px;
+}
+header h1 {
+    float: left;
+    font-size: large;
+    padding: 0 20px;
+}
+header h1 a {
+  color: #000000 !important;
+  text-decoration: none;
+}
+header nav {
+    float: right;
+}
+header ul {
+  margin: 0;
+}
+header nav li {
+  margin: 0;
+  float: left;
+  list-style: none;
+}
+
+header nav li a {
+    display: block;
+    padding: 0 10px;
+    line-height: 40px;
+}
+
+header nav li a:link {
+  background-color: #fed131;
+  text-decoration: none;
+  color: #000000;
+}
+header nav li a:visited {
+  color: #000000;
+}
+
 .filter {
   font-size: 90%;
   font-weight: bold;
