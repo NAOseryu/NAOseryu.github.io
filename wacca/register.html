@@ -19,7 +19,7 @@
 <link rel="stylesheet" type="text/css" href="../css/base.css?v=2020032201">
 
 <script src="../js/template.js?v=2020032201"></script>
-<script src="../js/regster.js"></script>
+<script src="../js/regster.js?v=2020040401"></script>
 <script src="../js/login.js"></script>
 
 <body style="font-family:'メイリオ',Meiryo;">
@@ -31,14 +31,16 @@
       <font  size=2 style="font-weight: bold; color: red">※重要なパスワードを使い回さないようにお願いします</font><br/>
       <br/>
       <span style="display: inline-block; width: 150px;">ユーザID</span>
-        <input type="text" id="userId" placeholder="ユーザID">
-        <br/>
-        <span style="display: inline-block; width: 150px;">パスワード</span>
-        <input type="password" id="password" placeholder="パスワード">
-        <br/>
-        <font size=2>(6文字以上、半角英数、記号)</font>
+      <input type="text" id="userId" placeholder="ユーザID">
+      <br/>
+      <font size=2>大文字は小文字に変換して登録されます（現状仕様です🙇‍♂️）</font>
+      <br/>
+      <span style="display: inline-block; width: 150px;">パスワード</span>
+      <input type="password" id="password" placeholder="パスワード">
+      <br/>
+      <font size=2>(6文字以上、半角英数、記号)</font>
 
-        <br/><br/>
+      <br/><br/>
       <input type="button" id="regsterExecute" value="登録">
     </form>
   </div>

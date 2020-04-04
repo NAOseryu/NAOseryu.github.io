@@ -27,24 +27,37 @@ $(document).ready(function() {
  */
 var regster = function() {
 
-	var userId = $("#userId").val();
-	var password = $("#password").val();
-
-	// 何か1つでも未入力の項目がある場合、処理終了
-  if (!userId | !password) {
-  	return false;
-  }
-
-  // 登録処理
-  userPool.signUp(userId, password, null, null, function(err, result){
-    if (err) {
-    	alert(err);
-		return;
-    } else {
-      // 成功したらログインも実行
-      login();
-    	// 登録成功の場合、登録成功画面に遷移する
-      location.href = "https://naoseryu.github.io/wacca/registerSuccess.html";
+  let userId = $("#userId").val();
+  try {
+		if (!userId) {
+	    throw new Error("ユーザIDは必須です");
+	  }
+    let pattern = /^[\w!"#$%&'()\*\+\-\.,\/:;<=>?@\[\\\]^_`{|}~]+$/;
+    if (!pattern.test(userId)) {
+      throw new Error("ユーザIDに使用できない文字が含まれてます");
     }
-  });
+  	let password = $("#password").val();
+
+  	// 何か1つでも未入力の項目がある場合、処理終了
+    if (!userId | !password) {
+      alert("必須項目が入力されていません");
+    	return false;
+    }
+
+    // 登録処理
+    userPool.signUp(userId, password, null, null, function(err, result){
+      if (err) {
+      	alert(err);
+  		return;
+      } else {
+        // 成功したらログインも実行
+        login();
+      	// 登録成功の場合、登録成功画面に遷移する
+        location.href = "https://naoseryu.github.io/wacca/registerSuccess.html";
+      }
+    });
+  } catch (e) {
+    $("font#sending").text("");
+    alert(e);
+  }
 }
