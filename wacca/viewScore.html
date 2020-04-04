@@ -20,7 +20,7 @@
 <link href="https://unpkg.com/tabulator-tables@4.1.4/dist/css/tabulator.min.css" rel="stylesheet">
 <script type="text/javascript" src="https://unpkg.com/tabulator-tables@4.1.4/dist/js/tabulator.min.js"></script>
 
-<link rel="stylesheet" type="text/css" href="../css/base.css?v=2020032201">
+<link rel="stylesheet" type="text/css" href="../css/base.css?v=2020040501">
 
 <script src="../js/base64.min.js"></script>
 <script src="../js/template.js?v=2020040501"></script>
@@ -30,45 +30,43 @@
   <div id="header"></div>
 
   <div id="menu">
-   <h3></h3>
+    <h3></h3>
   </div>
 
-  <div id="scoreTableFilter" onclick="scoreTableFilter()" class="filter">
-    難易度フィルター</br>
-    <input type="checkbox" name="NORMAL"><span class="diff_normal">NORMAL</span>｜
-    <input type="checkbox" name="HARD"><span class="diff_hard">HARD</span>｜
-    <input type="checkbox" name="EXPERT" checked="checked"><span class="diff_expert">EXPERT</span>
-    </br>
-    <text style="margin-top: 10px;display: inline-block;">スコアフィルター</span></br>
-    <input type="checkbox" name="AAA" checked="checked">AAA以下｜
-    <input type="checkbox" name="S" checked="checked">S｜
-    <input type="checkbox" name="SS" checked="checked">SS｜
-    <input type="checkbox" name="SSS" checked="checked">SSS｜
-    <input type="checkbox" name="MASTER" checked="checked">MASTER
-    </br>
-    <span style="margin-top: 10px;display: inline-block;">レベルフィルター</span>
-    <button type="button" onclick="change_all('levelFilter', true)">全レベルON</button>
-    <button type="button" onclick="change_all('levelFilter', false)">全レベルOFF</button>
-    </br>
-    <input type="checkbox" name="levelFilter" checked="checked">1｜
-    <input type="checkbox" name="levelFilter" checked="checked">2｜
-    <input type="checkbox" name="levelFilter" checked="checked">3｜
-    <input type="checkbox" name="levelFilter" checked="checked">4｜
-    <input type="checkbox" name="levelFilter" checked="checked">5｜
-    <input type="checkbox" name="levelFilter" checked="checked">6｜
-    <input type="checkbox" name="levelFilter" checked="checked">7
-    </br>
-    <input type="checkbox" name="levelFilter" checked="checked">8｜
-    <input type="checkbox" name="levelFilter" checked="checked">9｜
-    <input type="checkbox" name="levelFilter" checked="checked">10｜
-    <input type="checkbox" name="levelFilter" checked="checked">11｜
-    <input type="checkbox" name="levelFilter" checked="checked">12｜
-    <input type="checkbox" name="levelFilter" checked="checked">13｜
-    <input type="checkbox" name="levelFilter" checked="checked">14
-    </br>
-  </br>
-    <div id="dataCount"></div>
-  </div>
+  <div class="accordion_filter">
+    <label for="label1"><span class="accordion_checkbox">フィルター</span></label>
+    <input type="checkbox" id="label1" checked="checked" class="accordion">
+    <div id="scoreTableFilter" onclick="scoreTableFilter()" class="filter">
+      難易度フィルター</br>
+      <input type="checkbox" name="NORMAL"><span class="diff_normal">NORMAL</span>｜
+      <input type="checkbox" name="HARD"><span class="diff_hard">HARD</span>｜
+      <input type="checkbox" name="EXPERT" checked="checked"><span class="diff_expert">EXPERT</span></br>
+      <span style="margin-top: 10px;display: inline-block;">スコアフィルター</span></br>
+      <input type="checkbox" name="AAA" checked="checked">AAA以下｜
+      <input type="checkbox" name="S" checked="checked">S｜
+      <input type="checkbox" name="SS" checked="checked">SS｜
+      <input type="checkbox" name="SSS" checked="checked">SSS｜
+      <input type="checkbox" name="MASTER" checked="checked">MASTER</br>
+      <span style="margin-top: 10px;display: inline-block;">レベルフィルター</span>
+      <button type="button" onclick="change_all('levelFilter', true)">全レベルON</button>
+      <button type="button" onclick="change_all('levelFilter', false)">全レベルOFF</button></br>
+      <input type="checkbox" name="levelFilter" checked="checked">1｜
+      <input type="checkbox" name="levelFilter" checked="checked">2｜
+      <input type="checkbox" name="levelFilter" checked="checked">3｜
+      <input type="checkbox" name="levelFilter" checked="checked">4｜
+      <input type="checkbox" name="levelFilter" checked="checked">5｜
+      <input type="checkbox" name="levelFilter" checked="checked">6｜
+      <input type="checkbox" name="levelFilter" checked="checked">7</br>
+      <input type="checkbox" name="levelFilter" checked="checked">8｜
+      <input type="checkbox" name="levelFilter" checked="checked">9｜
+      <input type="checkbox" name="levelFilter" checked="checked">10｜
+      <input type="checkbox" name="levelFilter" checked="checked">11｜
+      <input type="checkbox" name="levelFilter" checked="checked">12｜
+      <input type="checkbox" name="levelFilter" checked="checked">13｜
+      <input type="checkbox" name="levelFilter" checked="checked">14</br>
+    </div>
+  </div></br>
+  <div id="dataCount"></div>
 
   <div id="scoreTable"></div>
 </body>

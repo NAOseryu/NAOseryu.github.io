@@ -45,6 +45,35 @@ header nav li a:visited {
   font-weight: bold;
 }
 
+.accordion_filter .filter {
+    height: 0;
+    padding: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: 0.3s;
+}
+
+.accordion:checked + .filter {
+    height: auto;
+    padding: 5px;
+    background: #eaeaea;
+    opacity: 1;
+}
+
 .diff_normal { color: #009DE6; }
 .diff_hard { color: #FED131; }
 .diff_expert { color: #FA0C98; }
+
+/* 未確定*/
+.accordion::before {
+  display: inline-block;
+  content: "▶";
+  margin: 0 0 0 0;
+  transform: rotate(0deg);
+  transition: .2s transform ease;
+}
+
+/* 未確定*/
+.accordion:checked::before {
+	transform: rotate(90deg);
+}
