@@ -44,28 +44,50 @@ var getUserAttribute = function(){
  */
 var addScore = function(){
 
-  //スコアデータ編集
-  var scoreObj = JSON.parse($("#scoreJson").val());
-  var scoreJson = JSON.stringify(scoreObj);
-  // ユーザID追加
-  var payload = "{\"UserId\": \"" + cognitoUser.username + "\", \"Score\": " + scoreJson + "}";
+	try {
+		if (!$("#scoreJson").val()) {
+	    throw new Error("ブックマークレットで取得できるスコアデータの内容を張り付けてください。");
+	  }
 
-  var lambda = new AWS.Lambda();
+	  //スコアデータ編集
+		try {
+			var scoreObj = JSON.parse($("#scoreJson").val());
+		} catch (e) {
+			throw new Error("ブックマークレットで取得できるスコアデータの内容を張り付けてください。");
+	  }
+	  var scoreJson = JSON.stringify(scoreObj);
+	  // ユーザID追加
+	  var payload = "{\"UserId\": \"" + cognitoUser.username + "\", \"Score\": " + scoreJson + "}";
 
-  var params = {
-    FunctionName:"addWaccaScore",
-    InvocationType:"RequestResponse",
-    Payload:payload
-  };
+	  var lambda = new AWS.Lambda();
 
-  lambda.invoke( params,function(err,data) {
-    if(err) {
-      console.log(err,err.stack);
-      $("font#sending").text("");
-    } else {
-      console.log(data);
-      // 送信成功の場合、スコア確認画面に遷移する
-      location.href = "/wacca/viewScore.html?user=" + cognitoUser.username;
-    }
-  });
+	  var params = {
+	    FunctionName:"addWaccaScore",
+	    InvocationType:"RequestResponse",
+	    Payload:payload
+	  };
+
+		// Lambda実行
+	  lambda.invoke( params,function(err,data) {
+	    if(err) {
+	      console.log(err,err.stack);
+	      $("font#sending").text("");
+				alert(e);
+	    } else {
+	      console.log(data);
+				let payload = JSON.parse(data.Payload);
+
+				if(payload.responce == "success") {
+		      // 送信成功の場合、スコア確認画面に遷移する
+		      location.href = "/wacca/viewScore.html?user=" + cognitoUser.username;
+				} else {
+					$("font#sending").text("");
+					alert(payload.errorMessage);
+				}
+	    }
+	  });
+	} catch (e) {
+		$("font#sending").text("");
+	  alert(e);
+	}
 };
