@@ -54,7 +54,7 @@ header nav li a:visited {
 .accordion:checked + label .accordion_check{
   display: inline-block;
 	transform: rotate(90deg);
-  transform-origin: 50% 40%;
+  transform-origin: 50% 50%;
 }
 
 .filter {
@@ -72,7 +72,7 @@ header nav li a:visited {
 
 .accordion:checked ~ .filter {
     height: auto;
-    padding: 0px 0px 0px 5px;
+    padding: 5px;
     background: #eaeaea;
     opacity: 1;
 }
