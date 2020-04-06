@@ -40,6 +40,23 @@ header nav li a:visited {
   color: #000000;
 }
 
+.accordion {
+  display: none;
+}
+
+.accordion + label .accordion_check{
+  display: inline-block;
+  margin: 0 0 0 0;
+  transform: rotate(0deg);
+  transition: 0.2s;
+}
+
+.accordion:checked + label .accordion_check{
+  display: inline-block;
+	transform: rotate(90deg);
+  transform-origin: 50% 40%;
+}
+
 .filter {
   font-size: 90%;
   font-weight: bold;
@@ -53,9 +70,9 @@ header nav li a:visited {
     transition: 0.3s;
 }
 
-.accordion:checked + .filter {
+.accordion:checked ~ .filter {
     height: auto;
-    padding: 5px;
+    padding: 0px 0px 0px 5px;
     background: #eaeaea;
     opacity: 1;
 }
@@ -63,17 +80,3 @@ header nav li a:visited {
 .diff_normal { color: #009DE6; }
 .diff_hard { color: #FED131; }
 .diff_expert { color: #FA0C98; }
-
-/* 未確定*/
-.accordion::before {
-  display: inline-block;
-  content: "▶";
-  margin: 0 0 0 0;
-  transform: rotate(0deg);
-  transition: .2s transform ease;
-}
-
-/* 未確定*/
-.accordion:checked::before {
-	transform: rotate(90deg);
-}
