@@ -90,6 +90,10 @@ var dispDiff = function(cell){ // 引数は難易度
     if(difficulty == "EXPERT") {
         cell.getElement().style.backgroundColor="#FA0C98";
     }
+		if(difficulty == "INFERNO") {
+        cell.getElement().style.color="#FFFFFF";
+				cell.getElement().style.backgroundColor="#4A004F";
+    }
     return difficulty; // 表示する値を返す
 }
 
@@ -121,6 +125,7 @@ var diffFilter = function(){
   let NORMAL = document.getElementsByName("NORMAL");
   let HARD = document.getElementsByName("HARD");
   let EXPERT = document.getElementsByName("EXPERT");
+	let INFERNO = document.getElementsByName("INFERNO");
 
   if (NORMAL[0].checked) {
     let filterScore = scoreJson.filter(function(item, index){
@@ -139,6 +144,13 @@ var diffFilter = function(){
   if (EXPERT[0].checked) {
     let filterScore = scoreJson.filter(function(item, index){
       if (item.Difficulty == "EXPERT") return true;
+    });
+    Array.prototype.push.apply(returnScore, filterScore);
+  }
+
+  if (INFERNO[0].checked) {
+    let filterScore = scoreJson.filter(function(item, index){
+      if (item.Difficulty == "INFERNO") return true;
     });
     Array.prototype.push.apply(returnScore, filterScore);
   }

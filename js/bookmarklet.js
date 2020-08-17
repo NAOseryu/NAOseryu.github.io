@@ -45,13 +45,21 @@ const getData = function(passVal) {
               n_level: tmpLevel[0].innerText.replace(/\s+/g, "").replace("NORMAL", ""),
               h_level: tmpLevel[1].innerText.replace(/\s+/g, "").replace("HARD", ""),
               e_level: tmpLevel[2].innerText.replace(/\s+/g, "").replace("EXPERT", ""),
+              i_level: tmpLevel[3].innerText.replace(/\s+/g, "").replace("INFERNO", ""),
               n_score: tmpScore[0].innerText.replace(/\s+/g, "").replace("SCORE", ""),
               h_score: tmpScore[1].innerText.replace(/\s+/g, "").replace("SCORE", ""),
               e_score: tmpScore[2].innerText.replace(/\s+/g, "").replace("SCORE", ""),
+              i_score: tmpScore[3].innerText.replace(/\s+/g, "").replace("SCORE", ""),
               n_playCount: tmpPlayCount[0].innerText.replace(/\s+/g, "").replace("プレイ回数：", "").replace("回", ""),
               h_playCount: tmpPlayCount[1].innerText.replace(/\s+/g, "").replace("プレイ回数：", "").replace("回", ""),
               e_playCount: tmpPlayCount[2].innerText.replace(/\s+/g, "").replace("プレイ回数：", "").replace("回", ""),
             }
+
+            // INFERNOのプレイ回数はある場合だけ取得
+            if (tmpResult.i_level != 0) {
+              tmpResult.i_playCount = tmpPlayCount[3].innerText.replace(/\s+/g, "").replace("プレイ回数：", "").replace("回", "")
+            }
+
             results.push(tmpResult)
           });
           $('.infoSpan').text(i + '/' + nodes.length + ' 曲完了');
