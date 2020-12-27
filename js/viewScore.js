@@ -54,10 +54,10 @@ var getScore = function(){
 			const difficultyList = [ "NORMAL", "HARD", "EXPERT", "INFERNO" ];
 			// レベルソート順の定義
 			const levelList = [ "1", "2", "3", "4", "5", "5+", "6", "6+", "7", "7+", "8", "8+", "9", "9+", "10", "10+", "11", "11+", "12", "12+", "13", "13+", "14", "14+" ];
-      // 取得結果を表示
-      scoreJson = JSON.parse(data.Payload);
-      scoreTable = new Tabulator("#scoreTable", {
-        data:scoreJson,
+			// 取得結果を表示
+			scoreJson = JSON.parse(data.Payload);
+			scoreTable = new Tabulator("#scoreTable", {
+				data:scoreJson,
         layout:"fitColumns",
         movableColumns:true,
         columns:[
@@ -219,8 +219,8 @@ var levelFilter = function(dispScore){
 
   for (let i = 0; i < levelFilter.length; i++) {
       if (levelFilter[i].checked) {
-		    let filterScore = dispScore.filter(function(item, index){
-		    if (item.Level == i + 1 || item.Level == i + 1 + "+") return true;
+				let filterScore = dispScore.filter(function(item, index){
+				if (item.Level == i + 1 || item.Level == i + 1 + "+") return true;
       });
       Array.prototype.push.apply(returnScore, filterScore);
     }
