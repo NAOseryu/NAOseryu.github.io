@@ -50,6 +50,10 @@ var getScore = function(){
       console.log(err,err.stack);
     } else {
       console.log(data);
+			// 難易度ソート順の定義
+			const difficultyList = [ "NORMAL", "HARD", "EXPERT", "INFERNO" ];
+			// レベルソート順の定義
+			const levelList = [ "1", "2", "3", "4", "5", "5+", "6", "6+", "7", "7+", "8", "8+", "9", "9+", "10", "10+", "11", "11+", "12", "12+", "13", "13+", "14", "14+" ];
       // 取得結果を表示
       scoreJson = JSON.parse(data.Payload);
       scoreTable = new Tabulator("#scoreTable", {
@@ -59,8 +63,8 @@ var getScore = function(){
         columns:[
           {title:"MusicId", field:"MusicId", visible:false},
           {title:"曲名", field:"Title", width:470},
-          {title:"難易度", field:"Difficulty", align:"center", formatter:dispDiff, width:77},
-          {title:"レベル", field:"Level", width:77},
+          {title:"難易度", field:"Difficulty", align:"center", sorter:(a,b)=>difficultyList.indexOf(a)-difficultyList.indexOf(b), formatter:dispDiff, width:77},
+          {title:"レベル", field:"Level", sorter:(a,b)=>levelList.indexOf(a)-levelList.indexOf(b), width:77},
           {title:"スコア", field:"Score", width:77},
           {title:"プレイ回数", field:"PlayCount", width:105}
         ],
@@ -215,8 +219,8 @@ var levelFilter = function(dispScore){
 
   for (let i = 0; i < levelFilter.length; i++) {
       if (levelFilter[i].checked) {
-      let filterScore = dispScore.filter(function(item, index){
-      if (item.Level == i + 1) return true;
+		    let filterScore = dispScore.filter(function(item, index){
+		    if (item.Level == i + 1 || item.Level == i + 1 + "+") return true;
       });
       Array.prototype.push.apply(returnScore, filterScore);
     }
