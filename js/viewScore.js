@@ -7,11 +7,11 @@ var userName = urlParams.get('user');
  */
 $(document).ready(function() {
 
-	// Amazon Cognito 認証情報プロバイダーの初期化
-	AWS.config.region = 'ap-northeast-1'; // リージョン
+  // Amazon Cognito 認証情報プロバイダーの初期化
+  AWS.config.region = 'ap-northeast-1'; // リージョン
   AWS.config.credentials = new AWS.CognitoIdentityCredentials({
     IdentityPoolId: 'ap-northeast-1:221fd836-a94e-4135-b98c-d951bf2186c7'
-	});
+  });
 
   // ユーザ名をチェックして表示
   checkUser();
@@ -50,14 +50,14 @@ var getScore = function(){
       console.log(err,err.stack);
     } else {
       console.log(data);
-			// 難易度ソート順の定義
-			const difficultyList = [ "NORMAL", "HARD", "EXPERT", "INFERNO" ];
-			// レベルソート順の定義
-			const levelList = [ "1", "2", "3", "4", "5", "5+", "6", "6+", "7", "7+", "8", "8+", "9", "9+", "10", "10+", "11", "11+", "12", "12+", "13", "13+", "14", "14+" ];
-			// 取得結果を表示
-			scoreJson = JSON.parse(data.Payload);
-			scoreTable = new Tabulator("#scoreTable", {
-				data:scoreJson,
+      // 難易度ソート順の定義
+      const difficultyList = [ "NORMAL", "HARD", "EXPERT", "INFERNO" ];
+      // レベルソート順の定義
+      const levelList = [ "1", "2", "3", "4", "5", "5+", "6", "6+", "7", "7+", "8", "8+", "9", "9+", "10", "10+", "11", "11+", "12", "12+", "13", "13+", "14", "14+" ];
+      // 取得結果を表示
+      scoreJson = JSON.parse(data.Payload);
+      scoreTable = new Tabulator("#scoreTable", {
+        data:scoreJson,
         layout:"fitColumns",
         movableColumns:true,
         columns:[
@@ -94,9 +94,9 @@ var dispDiff = function(cell){ // 引数は難易度
     if(difficulty == "EXPERT") {
         cell.getElement().style.backgroundColor="#FA0C98";
     }
-		if(difficulty == "INFERNO") {
+    if(difficulty == "INFERNO") {
         cell.getElement().style.color="#FFFFFF";
-				cell.getElement().style.backgroundColor="#4A004F";
+        cell.getElement().style.backgroundColor="#4A004F";
     }
     return difficulty; // 表示する値を返す
 }
@@ -129,7 +129,7 @@ var diffFilter = function(){
   let NORMAL = document.getElementsByName("NORMAL");
   let HARD = document.getElementsByName("HARD");
   let EXPERT = document.getElementsByName("EXPERT");
-	let INFERNO = document.getElementsByName("INFERNO");
+  let INFERNO = document.getElementsByName("INFERNO");
 
   if (NORMAL[0].checked) {
     let filterScore = scoreJson.filter(function(item, index){
@@ -219,8 +219,8 @@ var levelFilter = function(dispScore){
 
   for (let i = 0; i < levelFilter.length; i++) {
       if (levelFilter[i].checked) {
-				let filterScore = dispScore.filter(function(item, index){
-				if (item.Level == i + 1 || item.Level == i + 1 + "+") return true;
+        let filterScore = dispScore.filter(function(item, index){
+        if (item.Level == i + 1 || item.Level == i + 1 + "+") return true;
       });
       Array.prototype.push.apply(returnScore, filterScore);
     }
