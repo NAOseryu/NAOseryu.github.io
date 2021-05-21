@@ -31,7 +31,7 @@ const getData = function(passVal) {
           // 各曲のスコアページを取得
           $.ajax({
             type: 'POST',
-            url: 'https://wacca.marv-games.jp/web/music/detail',
+            url: '/web/music/detail',
             data: 'musicId=' + musicId,
             async: false,
           })
