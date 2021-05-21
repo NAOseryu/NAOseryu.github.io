@@ -63,7 +63,7 @@ const getData = function(passVal) {
             results.push(tmpResult)
           });
           $('.infoSpan').text(i + '/' + nodes.length + ' 曲完了');
-        }, 200)
+        }, 50)
       }
       resolve(results);
     }, 100);
