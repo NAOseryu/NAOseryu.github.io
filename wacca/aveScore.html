@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=850px">
+  <title>平均スコア</title>
+</head>
+
+<!-- Amazon Cognito用 -->
+<script src="../js/jsbn.js"></script>
+<script src="../js/jsbn2.js"></script>
+<script src="../js/sjcl.js"></script>
+<script src="../js/amazon-cognito-identity.min.js"></script>
+<!-- AWS SDK -->
+<script src="https://sdk.amazonaws.com/js/aws-sdk-2.624.0.min.js"></script>
+<!-- jquery用 -->
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
+<!-- Tabulator -->
+<link href="https://unpkg.com/tabulator-tables@4.1.4/dist/css/tabulator.min.css" rel="stylesheet">
+<script type="text/javascript" src="https://unpkg.com/tabulator-tables@4.1.4/dist/js/tabulator.min.js"></script>
+
+<link rel="stylesheet" type="text/css" href="../css/base.css?v=2020040601">
+
+<script src="../js/base64.min.js"></script>
+<script src="../js/template.js?v=2020040501"></script>
+<script src="../js/aveScore.js?v=2020032101"></script>
+
+<body style="font-family:'メイリオ',Meiryo;">
+  <div id="header"></div>
+
+  <div id="menu">
+    <h3>平均スコア</h3>
+    <span style="margin-top: 10px;display: inline-block;">
+    登録されているスコアの平均を出してみました。（EXPERTとINFERNOのみ）</br>
+    サンプルのデータが少ないので参考程度にオネガイシマス。</br>
+    ・毎週土曜1時ごろに更新されるはずです。</br>
+    ・要解禁の曲は一覧にないかもしれません。</br>
+    ・データのない曲は0になります。</br>
+  </br>
+    </span>
+  </div>
+
+  <div class="accordion_filter">
+    <input type="checkbox" id="label1" checked="checked" class="accordion">
+    <label for="label1">
+      <span class="accordion_check">▶</span>フィルター
+    </label>
+    <div id="scoreTableFilter" onclick="scoreTableFilter()" class="filter">
+      難易度フィルター</br>
+      <input type="checkbox" name="NORMAL"><span class="diff_normal">NORMAL</span>｜
+      <input type="checkbox" name="HARD"><span class="diff_hard">HARD</span>｜
+      <input type="checkbox" name="EXPERT" checked="checked"><span class="diff_expert">EXPERT</span>｜
+      <input type="checkbox" name="INFERNO" checked="checked"><span class="diff_inferno">INFERNO</span></br>
+      <span style="margin-top: 10px;display: inline-block;">レベルフィルター</span>
+      <button type="button" onclick="change_all('levelFilter', true)">全レベルON</button>
+      <button type="button" onclick="change_all('levelFilter', false)">全レベルOFF</button></br>
+      <input type="checkbox" name="levelFilter" checked="checked">1｜
+      <input type="checkbox" name="levelFilter" checked="checked">2｜
+      <input type="checkbox" name="levelFilter" checked="checked">3｜
+      <input type="checkbox" name="levelFilter" checked="checked">4｜
+      <input type="checkbox" name="levelFilter" checked="checked">5｜
+      <input type="checkbox" name="levelFilter" checked="checked">6｜
+      <input type="checkbox" name="levelFilter" checked="checked">7</br>
+      <input type="checkbox" name="levelFilter" checked="checked">8｜
+      <input type="checkbox" name="levelFilter" checked="checked">9｜
+      <input type="checkbox" name="levelFilter" checked="checked">10｜
+      <input type="checkbox" name="levelFilter" checked="checked">11｜
+      <input type="checkbox" name="levelFilter" checked="checked">12｜
+      <input type="checkbox" name="levelFilter" checked="checked">13｜
+      <input type="checkbox" name="levelFilter" checked="checked">14</br>
+    </div>
+  </div></br>
+  <div id="dataCount"></div>
+
+  <div id="scoreTable"></div>
+</body>
+</html>
