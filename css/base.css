@@ -81,3 +81,11 @@ header nav li a:visited {
 .diff_hard { color: #FED131; }
 .diff_expert { color: #FA0C98; }
 .diff_inferno { color: #4A004F; }
+
+.kousin {
+  overflow:auto;
+  width:800px; height:100px;
+  padding:5px;
+  border:2px dotted #c0c0c0 ;
+  line-height:1.5em;
+}

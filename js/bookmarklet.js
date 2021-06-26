@@ -28,11 +28,28 @@ const getData = function(passVal) {
           tmpScore = nodes[i - 1].querySelectorAll('.playdata__score-list__song-info__score');
 
           console.log(musicId);
+
+          // Cookie設定
+          let cookies = document.cookie; //全てのcookieを取り出して
+          let cookiesArray = cookies.split(';'); // ;で分割し配列に
+          let wsid;
+          for (var c of cookiesArray) { //一つ一つ取り出して
+              cookieArray = c.split('='); //さらに=で分割して配列に
+              if( cookieArray[0] == 'WSID') { // 取り出したいkeyと合致したら
+                  wsid = cookieArray[1];  // [key,value]
+                  console.log("Cookie: " + wsid);
+              }
+          }
+          let sendCookie = "WSID=" + wsid + "; WUID=" + wsid
+
           // 各曲のスコアページを取得
           $.ajax({
             type: 'POST',
             url: '/web/music/detail',
             data: 'musicId=' + musicId,
+            headers: {
+                "set-cookie":sendCookie
+            },
             async: false,
           })
           .done(function(data) {
@@ -63,7 +80,7 @@ const getData = function(passVal) {
             results.push(tmpResult)
           });
           $('.infoSpan').text(i + '/' + nodes.length + ' 曲完了');
-        }, 50)
+        }, 10)
       }
       resolve(results);
     }, 100);
