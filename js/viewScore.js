@@ -65,8 +65,8 @@ var getScore = function(){
           {title:"曲名", field:"Title", width:470},
           {title:"難易度", field:"Difficulty", align:"center", sorter:(a,b)=>difficultyList.indexOf(a)-difficultyList.indexOf(b), formatter:dispDiff, width:77},
           {title:"レベル", field:"Level", sorter:(a,b)=>levelList.indexOf(a)-levelList.indexOf(b), width:77},
-          {title:"スコア", field:"Score", width:77},
-          {title:"プレイ回数", field:"PlayCount", width:105}
+          {title:"スコア", field:"Score", width:77}
+          //{title:"プレイ回数", field:"PlayCount", width:105}
         ],
         initialSort:[
           {column:"Title", dir:"asc"},
