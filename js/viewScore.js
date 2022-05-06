@@ -53,7 +53,7 @@ var getScore = function(){
       // 難易度ソート順の定義
       const difficultyList = [ "NORMAL", "HARD", "EXPERT", "INFERNO" ];
       // レベルソート順の定義
-      const levelList = [ "1", "2", "3", "4", "5", "5+", "6", "6+", "7", "7+", "8", "8+", "9", "9+", "10", "10+", "11", "11+", "12", "12+", "13", "13+", "14", "14+" ];
+      const levelList = [ "1", "2", "3", "4", "5", "5+", "6", "6+", "7", "7+", "8", "8+", "9", "9+", "10", "10+", "11", "11+", "12", "12+", "13", "13+", "14", "14+", "15", "15+" ];
       // 取得結果を表示
       scoreJson = JSON.parse(data.Payload);
       scoreTable = new Tabulator("#scoreTable", {
@@ -171,6 +171,7 @@ var scoreFilter = function(dispScore){
   let S = document.getElementsByName("S");
   let SS = document.getElementsByName("SS");
   let SSS = document.getElementsByName("SSS");
+  let SSS_PLUS = document.getElementsByName("SSS+");
   let MASTER = document.getElementsByName("MASTER");
 
   if (AAA[0].checked) {
@@ -196,7 +197,14 @@ var scoreFilter = function(dispScore){
 
   if (SSS[0].checked) {
     let filterScore = dispScore.filter(function(item, index){
-      if (item.Score >= 980000 && item.Score < 1000000) return true;
+      if (item.Score >= 980000 && item.Score < 990000) return true;
+    });
+    Array.prototype.push.apply(returnScore, filterScore);
+  }
+
+  if (SSS_PLUS[0].checked) {
+    let filterScore = dispScore.filter(function(item, index){
+      if (item.Score >= 990000 && item.Score < 1000000) return true;
     });
     Array.prototype.push.apply(returnScore, filterScore);
   }
