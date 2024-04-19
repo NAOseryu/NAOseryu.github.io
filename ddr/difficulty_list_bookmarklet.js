@@ -10,7 +10,7 @@ for (chartKey of Object.keys(difficultyList).concat(missingChartsChartKeys)) {
 		scoreText.textContent = score.score
 
 		if (score.lamp == '0') {
-			scoreText.style.color = '#404040';
+			scoreText.style.color = '#808080';
 		} else if (score.score >= 990000) {
 			scoreText.style.color = '#FFFF00';
 		} else if (score.score < 790000) {
