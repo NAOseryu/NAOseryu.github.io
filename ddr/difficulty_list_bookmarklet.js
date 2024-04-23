@@ -14,6 +14,8 @@ for (chartKey of Object.keys(difficultyList).concat(missingChartsChartKeys)) {
 			scoreText.style.color = '#808080';
 		} else if (score.score >= 990000) {
 			scoreText.style.color = '#FFFF00';
+		} else if (score.score >= 950000) {
+			scoreText.style.color = '#30d81e';
 		} else if (score.score < 790000) {
 			scoreText.style.color = '#00FFFF';
 		}
