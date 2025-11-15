@@ -10,8 +10,14 @@ for (chartKey of Object.keys(difficultyList).concat(missingChartsChartKeys)) {
 		scoreText.style.paddingRight='5px'
 		scoreText.textContent = score.score
 
-		if (score.lamp == '0') {
+		if (score.lamp === 0) {
 			scoreText.style.color = '#808080';
+		} else if (score.lamp === 5) {
+			scoreText.style.background = 'linear-gradient(0deg, #ffffff 25%, #a5ffe5 40%, #ffc4f9 55%)';
+			scoreText.style.color = 'transparent';
+			scoreText.style.webkitBackgroundClip = 'text';
+			scoreText.style.backgroundClip = 'text';
+			scoreText.style.webkitTextFillColor = 'transparent';
 		} else if (score.score >= 990000) {
 			scoreText.style.color = '#FFFF00';
 		} else if (score.score >= 950000) {
@@ -20,15 +26,13 @@ for (chartKey of Object.keys(difficultyList).concat(missingChartsChartKeys)) {
 			scoreText.style.color = '#00FFFF';
 		}
 
-		$('#div-jacket-' + chartKey.replace('/', '-')).append(scoreText);
-
 		scoreTime = document.createElement('p');
 		scoreTime.style.fontSize='20px';
 		scoreTime.style.margin='0px 0px 0px 0px'
 		scoreTime.style.paddingRight='5px'
 		let updateTime = new Date(score.score_time * 1000);
-		scoreTime.textContent = updateTime.toLocaleDateString()
+		scoreTime.textContent = updateTime.toLocaleDateString('ja-JP')
 
-		$('#div-jacket-' + chartKey.replace('/', '-')).append(scoreTime);
+		$('#div-jacket-' + chartKey.replace('/', '-')).append(scoreText, scoreTime);
 	}
 }
