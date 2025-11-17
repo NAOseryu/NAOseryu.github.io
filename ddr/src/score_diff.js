@@ -8,7 +8,7 @@
   
   // 既に差分列が追加されているかチェック
   if (document.getElementById('th-sort-diff')) {
-    alert('差分列は既に追加されています');
+    console.log(`差分列は既に追加されています`);
     return;
   }
   
