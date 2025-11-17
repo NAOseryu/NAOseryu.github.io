@@ -12,6 +12,19 @@ https://naoseryu.github.io/wacca/top.html
   * 各項目でのソート
   * 難易度・スコアでの絞り込み
 
+## 三倍icecreamスコア一覧用ブックマークレット
+自分とライバルのスコアの差を表示してくれます  
+ソートもできます
+
+#### 使い方
+* 以下をブックマークに登録
+```
+javascript:(function(url){s=document.createElement('script');s.src=url;document.body.appendChild(s);})('https://naoseryu.github.io/ddr/score_bookmarklet.js')
+```
+
+* [三倍icecream](https://3icecream.com/ddr/home)にログイン
+* スコア一覧でブックマークを実行
+
 ## 三倍icecream難易度表用ブックマークレット
 難易度表に自分のスコアを表示してくれます  
 https://github.com/NAOseryu/NAOseryu.github.io/blob/master/ddr/difficulty_list_bookmarklet.js

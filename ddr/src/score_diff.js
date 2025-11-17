@@ -1,6 +1,3 @@
-// 「javascript:(function(url){s=document.createElement('script');s.src=url;document.body.appendChild(s);})('https://naoseryu.github.io/ddr/score_diff.js')」
-// をブックマークに登録して実行すること
-
 (function(){
   // ヘッダー行を取得
   const headerRow = document.querySelector('.tr-scores-header');
