@@ -31,6 +31,28 @@
   // 各スコア行に差分を追加
   const scoreRows = document.querySelectorAll('.tr-score');
   const scoreData = typeof indexedAllScores !== 'undefined' ? indexedAllScores : {};
+  const songData = typeof ALL_SONG_DATA !== 'undefined' ? ALL_SONG_DATA : [];
+  const songsById = new Map(songData.map(song => [song.song_id, song]));
+
+  // 行IDの難易度番号に対応するratingsとtiersから表示値を作る
+  scoreRows.forEach(row => {
+    const match = row.id.match(/^(.*)-d(\d+)$/);
+    if (!match) return;
+
+    const song = songsById.get(match[1]);
+    const difficultyIndex = Number(match[2]);
+    if (!song || !Array.isArray(song.ratings) || !Array.isArray(song.tiers)) return;
+
+    const rating = song.ratings[difficultyIndex];
+    const tier = song.tiers[difficultyIndex];
+    if (rating === undefined || tier === undefined ||
+        !Number.isFinite(Number(rating)) || !Number.isFinite(Number(tier))) return;
+
+    const difficultyCell = row.querySelector('.td-level .sp-difficulty');
+    if (difficultyCell) {
+      difficultyCell.textContent = (Number(rating) + Number(tier)).toFixed(2);
+    }
+  });
 
   // 行ID末尾の「-d難易度」を譜面キーの「/難易度」に変換して更新日時を取得する
   function getPlayedAt(row) {
