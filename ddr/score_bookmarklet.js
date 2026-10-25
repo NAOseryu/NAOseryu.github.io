@@ -51,10 +51,10 @@
       .some(node => !isScoreDiffElement(node));
   }
 
-  // 短時間に続くDOM更新をまとめ、表の再描画後に一度だけ再適用する
+  // DOM更新が1.2秒間止まった後に一度だけ再適用する
   function scheduleScoreDiffReload() {
     clearTimeout(window._scoreDiffReloadTimer);
-    window._scoreDiffReloadTimer = setTimeout(() => loadScoreDiffScript(true), 400);
+    window._scoreDiffReloadTimer = setTimeout(() => loadScoreDiffScript(true), 1200);
   }
 
   const scoreTable = document.querySelector('.tr-scores-header')?.closest('table');
@@ -90,5 +90,23 @@
       console.warn('[ScoreDiff] window.reloadTable 関数が見つかりませんでした。フック処理をスキップします。');
   } else {
       console.log('[ScoreDiff] window.reloadTable は既にフックされています。');
+  }
+
+  // 次ページのスコア取得が完了してから差分列を再適用する
+  if (typeof window.nextPageFollowScores === 'function' &&
+      !window._original_nextPageFollowScores) {
+    window._original_nextPageFollowScores = window.nextPageFollowScores;
+    window.nextPageFollowScores = function() {
+      const result = window._original_nextPageFollowScores.apply(this, arguments);
+      if (result && typeof result.then === 'function') {
+        result.then(scheduleScoreDiffReload, scheduleScoreDiffReload);
+      } else {
+        scheduleScoreDiffReload();
+      }
+      return result;
+    };
+    console.log('[ScoreDiff] nextPageFollowScores をフックしました。');
+  } else if (typeof window.nextPageFollowScores !== 'function') {
+    console.warn('[ScoreDiff] nextPageFollowScores 関数が見つかりませんでした。フック処理をスキップします。');
   }
 })();
