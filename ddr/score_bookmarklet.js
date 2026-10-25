@@ -28,70 +28,48 @@
   // 初回実行: ページロード時に一度差分スクリプトを読み込む
   loadScoreDiffScript(false);
 
-  // ブックマークレット自身が追加した要素は再適用の監視対象から除外する
-  function isScoreDiffElement(node) {
-    return node.nodeType === Node.ELEMENT_NODE &&
-      node.matches('#score_diff, #rival-column-controls, #th-sort-diff, #th-sort-played-at, ' +
-        'th[id^="th-sort-rival-score-"], .td-diff, .td-played-at, [class*="td-rival-score-"]');
-  }
-
-  // 差分列やチェックボックスの変更ではなく、元サイトの表更新だけを検出する
-  function isPageTableMutation(mutation) {
-    const target = mutation.target.nodeType === Node.ELEMENT_NODE
-      ? mutation.target
-      : mutation.target.parentElement;
-    if (target && target.closest(
-      '#score_diff, #rival-column-controls, #th-sort-diff, #th-sort-played-at, ' +
-      'th[id^="th-sort-rival-score-"], .td-diff, .td-played-at, [class*="td-rival-score-"]'
-    )) {
-      return false;
-    }
-
-    return [...mutation.addedNodes, ...mutation.removedNodes]
-      .some(node => !isScoreDiffElement(node));
-  }
-
   // DOM更新が1.2秒間止まった後に一度だけ再適用する
   function scheduleScoreDiffReload() {
     clearTimeout(window._scoreDiffReloadTimer);
     window._scoreDiffReloadTimer = setTimeout(() => loadScoreDiffScript(true), 1200);
   }
 
-  const scoreTable = document.querySelector('.tr-scores-header')?.closest('table');
-  if (scoreTable && scoreTable.parentElement && !window._scoreDiffTableObserver) {
-    // 表の行が差し替わるケースもMutationObserverで検出する
+  function getScoreTableState() {
+    return {
+      table: document.querySelector('.tr-scores-header')?.closest('table') || null,
+      rows: new Set(document.querySelectorAll('.tr-score'))
+    };
+  }
+
+  function hasScoreTableChanged(previous, current) {
+    if (previous.table !== current.table || previous.rows.size !== current.rows.size) {
+      return true;
+    }
+    for (const row of current.rows) {
+      if (!previous.rows.has(row)) return true;
+    }
+    return false;
+  }
+
+  if (!window._scoreDiffTableObserver) {
+    // 行の並べ替えではなく、表や行そのものが差し替わった場合だけ再適用する
+    window._scoreDiffTableState = getScoreTableState();
     window._scoreDiffTableObserver = new MutationObserver(mutations => {
-      if (mutations.some(isPageTableMutation)) {
+      if (mutations.length === 0) return;
+
+      const currentState = getScoreTableState();
+      const hasChanged = hasScoreTableChanged(window._scoreDiffTableState, currentState);
+      window._scoreDiffTableState = currentState;
+      if (hasChanged) {
         scheduleScoreDiffReload();
       }
     });
-    window._scoreDiffTableObserver.observe(scoreTable.parentElement, {
+    window._scoreDiffTableObserver.observe(document.body, {
       childList: true,
       subtree: true
     });
   }
   
-  // window.reloadTable のモンキーパッチ
-  if (typeof window.reloadTable === 'function' && !window._original_reloadTable) {
-    // 元の関数への参照を保持 (初めて上書きする場合のみ実行)
-    window._original_reloadTable = window.reloadTable;
-
-    // window.reloadTable を上書き
-    window.reloadTable = function() {
-      // 元の関数を実行 (argumentsをそのまま渡す)
-      const result = window._original_reloadTable.apply(this, arguments);
-
-      // 非同期の表更新が落ち着いてから差分列を再適用する
-      scheduleScoreDiffReload();
-      return result;
-    };
-    console.log('[ScoreDiff] window.reloadTable をフック（上書き）しました。');
-  } else if (typeof window.reloadTable !== 'function') {
-      console.warn('[ScoreDiff] window.reloadTable 関数が見つかりませんでした。フック処理をスキップします。');
-  } else {
-      console.log('[ScoreDiff] window.reloadTable は既にフックされています。');
-  }
-
   // 次ページのスコア取得が完了してから差分列を再適用する
   if (typeof window.nextPageFollowScores === 'function' &&
       !window._original_nextPageFollowScores) {
