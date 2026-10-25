@@ -230,26 +230,127 @@
     return;
   }
 
-  // 各ライバルのスコアを同じSP/DPモードで取得し、譜面キーで引ける形にする
-  const rivalRequests = rivalOptions.map(rival => jQuery.ajax({
-    url: '/api/follow_scores',
-    type: 'POST',
-    contentType: 'application/json',
-    processData: false,
-    data: JSON.stringify({ username: rival.username, SP_or_DP: spdpMode })
-  }).then(jsonRes => {
-    jsonRes.scores.forEach(score => {
-      score.name = rival.name;
-    });
-    return { name: rival.name, scores: buildScoreIndex(jsonRes.scores) };
-  }, xhr => {
-    if (xhr.status === 400) {
-      console.warn(`ライバル ${rival.name} のスコアを取得できませんでした`);
-    } else {
-      console.error(`ライバル ${rival.name} のスコア取得に失敗しました`, xhr);
+  const rivalScoreCacheTtl = 24 * 60 * 60 * 1000;
+  function getCachedRivalScores(username, mode) {
+    const cacheKey = `rival-scores:${encodeURIComponent(username)}:${encodeURIComponent(mode)}`;
+    let cachedText;
+    try {
+      cachedText = localStorage.getItem(cacheKey);
+    } catch (error) {
+      console.warn('ライバルスコアのキャッシュを読み込めませんでした', error);
+      return null;
     }
-    return null;
-  }));
+    if (!cachedText) return null;
+
+    let cached;
+    try {
+      cached = JSON.parse(cachedText);
+    } catch (error) {
+      console.warn('ライバルスコアのキャッシュを解析できませんでした', error);
+      try {
+        localStorage.removeItem(cacheKey);
+      } catch (removeError) {
+        console.warn('不正なライバルスコアのキャッシュを削除できませんでした', removeError);
+      }
+      return null;
+    }
+
+    if (!cached || !Number.isFinite(cached.expiresAt) || !Array.isArray(cached.scores)) {
+      console.warn('ライバルスコアのキャッシュ形式が不正です');
+      try {
+        localStorage.removeItem(cacheKey);
+      } catch (error) {
+        console.warn('不正なライバルスコアのキャッシュを削除できませんでした', error);
+      }
+      return null;
+    }
+    if (cached.expiresAt <= Date.now()) {
+      try {
+        localStorage.removeItem(cacheKey);
+      } catch (error) {
+        console.warn('期限切れのライバルスコアのキャッシュを削除できませんでした', error);
+      }
+      return null;
+    }
+    return cached.scores;
+  }
+
+  function cacheRivalScores(username, mode, scores) {
+    const cacheKey = `rival-scores:${encodeURIComponent(username)}:${encodeURIComponent(mode)}`;
+    try {
+      localStorage.setItem(cacheKey, JSON.stringify({
+        expiresAt: Date.now() + rivalScoreCacheTtl,
+        scores
+      }));
+    } catch (error) {
+      console.warn('ライバルスコアをキャッシュに保存できませんでした', error);
+    }
+  }
+
+  function updateRivalCell(row, rivalCell, rivalScore) {
+    const scoreSpans = rivalCell.querySelectorAll('.sp-score');
+    const score = rivalScore && rivalScore.score !== null &&
+      rivalScore.score !== undefined && rivalScore.score !== ''
+      ? Number(rivalScore.score)
+      : NaN;
+
+    if (Number.isFinite(score)) {
+      scoreSpans[0].textContent = score.toLocaleString();
+      rivalCell.dataset.sortValue = String(score);
+    } else {
+      scoreSpans[0].textContent = '-';
+      rivalCell.dataset.sortValue = '';
+    }
+
+    const ownScoreText = row.querySelector('.td-score .sp-score')?.textContent.trim();
+    const ownScore = ownScoreText && ownScoreText !== 'スコアなし'
+      ? Number(ownScoreText.replace(/,/g, ''))
+      : NaN;
+    if (Number.isFinite(ownScore) && Number.isFinite(score)) {
+      const diff = ownScore - score;
+      scoreSpans[1].textContent = `${diff > 0 ? '+' : ''}${diff.toLocaleString()}`;
+      scoreSpans[1].style.color = diff > 0 ? '#4CAF50' : diff < 0 ? '#F44336' : '#666';
+    } else {
+      scoreSpans[1].textContent = '-';
+      scoreSpans[1].style.color = '';
+    }
+  }
+
+  // 各ライバルのスコアを同じSP/DPモードで取得し、譜面キーで引ける形にする
+  const rivalRequests = rivalOptions.map(rival => {
+    const cachedScores = getCachedRivalScores(rival.username, spdpMode);
+    const request = cachedScores
+      ? Promise.resolve({ scores: cachedScores })
+      : jQuery.ajax({
+        url: '/api/follow_scores',
+        type: 'POST',
+        contentType: 'application/json',
+        processData: false,
+        data: JSON.stringify({ username: rival.username, SP_or_DP: spdpMode })
+      }).then(jsonRes => {
+        if (jsonRes && Array.isArray(jsonRes.scores)) {
+          cacheRivalScores(rival.username, spdpMode, jsonRes.scores);
+        }
+        return { scores: jsonRes && jsonRes.scores };
+      });
+
+    return request.then(jsonRes => {
+      if (!Array.isArray(jsonRes.scores)) {
+        throw new Error(`ライバル ${rival.name} のスコア応答が不正です`);
+      }
+      jsonRes.scores.forEach(score => {
+        score.name = rival.name;
+      });
+      return { username: rival.username, name: rival.name, scores: buildScoreIndex(jsonRes.scores) };
+    }, xhr => {
+      if (xhr.status === 400) {
+        console.warn(`ライバル ${rival.name} のスコアを取得できませんでした`);
+      } else {
+        console.error(`ライバル ${rival.name} のスコア取得に失敗しました`, xhr);
+      }
+      return null;
+    });
+  });
 
   Promise.all(rivalRequests).then(results => {
     const rivalColumns = results.filter(rival => rival !== null);
@@ -260,19 +361,72 @@
     }
 
     // チェックボックスは列の外に置き、非表示後も再表示できるようにする
-    const rivalControls = document.createElement('div');
-    rivalControls.id = 'rival-column-controls';
-    rivalControls.style.display = 'flex';
-    rivalControls.style.flexWrap = 'wrap';
-    rivalControls.style.gap = '0.5em 1em';
-    rivalControls.style.backgroundColor = '#fff';
-    rivalControls.style.margin = '0px 18px';
-    rivalControls.setAttribute('aria-label', 'ライバル列の表示設定');
+    const rivalControls = document.getElementById('rival-column-controls') ||
+      document.createElement('div');
+    const shouldAddRivalControls = !rivalControls.isConnected;
+    if (shouldAddRivalControls) {
+      rivalControls.id = 'rival-column-controls';
+      rivalControls.style.display = 'flex';
+      rivalControls.style.flexDirection = 'column';
+      rivalControls.style.gap = '0.5em 1em';
+      rivalControls.style.backgroundColor = '#fff';
+      rivalControls.style.margin = '0px 18px';
+      rivalControls.setAttribute('aria-label', 'ライバル列の表示設定');
+    }
 
-    if (rivalColumns.length > 0) {
+    const rivalCheckboxes = document.createElement('div');
+    rivalCheckboxes.style.display = 'flex';
+    rivalCheckboxes.style.flexWrap = 'wrap';
+    rivalCheckboxes.style.gap = '0.5em 1em';
+    if (rivalColumns.length > 0 && shouldAddRivalControls) {
+      rivalControls.appendChild(rivalCheckboxes);
+
       const controlsTitle = document.createElement('span');
       controlsTitle.textContent = 'ライバル列:';
-      rivalControls.appendChild(controlsTitle);
+      rivalCheckboxes.appendChild(controlsTitle);
+
+      const refreshButton = document.createElement('button');
+      refreshButton.type = 'button';
+      refreshButton.textContent = 'ライバルスコアを更新';
+      refreshButton.style.width = 'fit-content';
+      refreshButton.addEventListener('click', () => {
+        refreshButton.disabled = true;
+        refreshButton.textContent = '更新中...';
+
+        Promise.all(rivalColumns.map((rival, index) => Promise.resolve(jQuery.ajax({
+          url: '/api/follow_scores',
+          type: 'POST',
+          contentType: 'application/json',
+          processData: false,
+          data: JSON.stringify({ username: rival.username, SP_or_DP: spdpMode })
+        })).then(jsonRes => {
+          if (!jsonRes || !Array.isArray(jsonRes.scores)) {
+            throw new Error(`ライバル ${rival.name} のスコア応答が不正です`);
+          }
+
+          jsonRes.scores.forEach(score => {
+            score.name = rival.name;
+          });
+          cacheRivalScores(rival.username, spdpMode, jsonRes.scores);
+          rival.scores = buildScoreIndex(jsonRes.scores);
+          scoreRows.forEach(row => {
+            const match = row.id.match(/^(.*)-d(\d+)$/);
+            const rivalScore = match ? rival.scores[`${match[1]}/${match[2]}`] : null;
+            const rivalCell = row.querySelector(`.td-rival-score-${index}`);
+            if (rivalCell) updateRivalCell(row, rivalCell, rivalScore);
+          });
+        }).catch(error => {
+          if (error && error.status === 400) {
+            console.warn(`ライバル ${rival.name} のスコアを取得できませんでした`);
+          } else {
+            console.error(`ライバル ${rival.name} のスコア取得に失敗しました`, error);
+          }
+        }))).then(() => {
+          refreshButton.disabled = false;
+          refreshButton.textContent = 'ライバルスコアを更新';
+        });
+      });
+      rivalControls.appendChild(refreshButton);
       scoreTable.parentElement.insertBefore(rivalControls, scoreTable);
     }
 
@@ -287,25 +441,27 @@
       rivalHeader.style.display = 'none';
       makeHeaderSticky(rivalHeader);
 
-      const visibilityLabel = document.createElement('label');
-      visibilityLabel.textContent = rival.name;
-      visibilityLabel.style.cursor = 'pointer';
+      if (shouldAddRivalControls) {
+        const visibilityLabel = document.createElement('label');
+        visibilityLabel.textContent = rival.name;
+        visibilityLabel.style.cursor = 'pointer';
 
-      const visibilityCheckbox = document.createElement('input');
-      visibilityCheckbox.type = 'checkbox';
-      visibilityCheckbox.checked = false;
-      visibilityCheckbox.setAttribute('aria-label', `${rival.name}の列を表示`);
-      visibilityCheckbox.style.marginRight = '0.25em';
-      visibilityCheckbox.addEventListener('change', () => {
-        const visible = visibilityCheckbox.checked;
-        rivalHeader.style.display = visible ? '' : 'none';
-        scoreRows.forEach(row => {
-          const cell = row.querySelector(`.td-rival-score-${index}`);
-          if (cell) cell.style.display = visible ? '' : 'none';
+        const visibilityCheckbox = document.createElement('input');
+        visibilityCheckbox.type = 'checkbox';
+        visibilityCheckbox.checked = false;
+        visibilityCheckbox.setAttribute('aria-label', `${rival.name}の列を表示`);
+        visibilityCheckbox.style.marginRight = '0.25em';
+        visibilityCheckbox.addEventListener('change', () => {
+          const visible = visibilityCheckbox.checked;
+          rivalHeader.style.display = visible ? '' : 'none';
+          scoreRows.forEach(row => {
+            const cell = row.querySelector(`.td-rival-score-${index}`);
+            if (cell) cell.style.display = visible ? '' : 'none';
+          });
         });
-      });
-      visibilityLabel.prepend(visibilityCheckbox);
-      rivalControls.appendChild(visibilityLabel);
+        visibilityLabel.prepend(visibilityCheckbox);
+        rivalCheckboxes.appendChild(visibilityLabel);
+      }
 
       if (previousHeader) {
         previousHeader.after(rivalHeader);
@@ -324,38 +480,14 @@
 
         const scoreSpan = document.createElement('span');
         scoreSpan.className = 'sp-score';
-        if (rivalScore && rivalScore.score !== null && rivalScore.score !== undefined &&
-            Number.isFinite(Number(rivalScore.score))) {
-          const score = Number(rivalScore.score);
-          scoreSpan.textContent = score.toLocaleString();
-          rivalCell.dataset.sortValue = String(score);
-        } else {
-          scoreSpan.textContent = '-';
-          rivalCell.dataset.sortValue = '';
-        }
         rivalCell.appendChild(scoreSpan);
 
-        const ownScoreText = row.querySelector('.td-score .sp-score')?.textContent.trim();
-        const ownScore = ownScoreText && ownScoreText !== 'スコアなし'
-          ? Number(ownScoreText.replace(/,/g, ''))
-          : NaN;
-        const rivalScoreValue = rivalScore && rivalScore.score !== null &&
-          rivalScore.score !== undefined && rivalScore.score !== ''
-          ? Number(rivalScore.score)
-          : NaN;
         const rivalDiffSpan = document.createElement('span');
         rivalDiffSpan.className = 'sp-score';
         rivalDiffSpan.style.display = 'block';
         rivalDiffSpan.style.fontSize = 'smaller';
-
-        if (Number.isFinite(ownScore) && Number.isFinite(rivalScoreValue)) {
-          const diff = ownScore - rivalScoreValue;
-          rivalDiffSpan.textContent = `${diff > 0 ? '+' : ''}${diff.toLocaleString()}`;
-          rivalDiffSpan.style.color = diff > 0 ? '#4CAF50' : diff < 0 ? '#F44336' : '#666';
-        } else {
-          rivalDiffSpan.textContent = '-';
-        }
         rivalCell.appendChild(rivalDiffSpan);
+        updateRivalCell(row, rivalCell, rivalScore);
 
         const previousCell = index === 0
           ? row.querySelector('.td-diff')
