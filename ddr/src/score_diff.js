@@ -1,4 +1,6 @@
 (function(){
+  // 元サイトの表更新後に実行された場合は、既存の追加列を除去して再構築する
+  const forceReapply = document.currentScript?.dataset.forceReapply === 'true';
   // ヘッダー行を取得
   const headerRow = document.querySelector('.tr-scores-header');
   if (!headerRow) {
@@ -13,12 +15,21 @@
     header.style.zIndex = '1000';
   }
   headerRow.querySelectorAll('th').forEach(makeHeaderSticky);
-  
+
+  if (forceReapply) {
+    document.querySelectorAll(
+      '#th-sort-diff, #th-sort-played-at, th[id^="th-sort-rival-score-"], ' +
+      '.td-diff, .td-played-at, [class*="td-rival-score-"]'
+    ).forEach(element => element.remove());
+    document.getElementById('rival-column-controls')?.remove();
+  }
+
   // 既に差分列が追加されているかチェック
   if (document.getElementById('th-sort-diff')) {
     console.log(`差分列は既に追加されています`);
     return;
   }
+  document.getElementById('rival-column-controls')?.remove();
   
   // 差分列のヘッダーを追加
   const diffHeader = document.createElement('th');
@@ -223,6 +234,9 @@
       name: `${username} (${name})`
     }));
   if (rivalOptions.length === 0) return;
+  // 表が再描画されても、同じページ内で選択した列の表示状態を保つ
+  const visibleRivals = window._scoreDiffVisibleRivals ||
+    (window._scoreDiffVisibleRivals = {});
 
   if (typeof jQuery === 'undefined' || typeof buildScoreIndex !== 'function' ||
       typeof spdpMode === 'undefined') {
@@ -438,7 +452,8 @@
       rivalHeader.textContent = rival.name;
       rivalHeader.style.cursor = 'pointer';
       rivalHeader.style.userSelect = 'none';
-      rivalHeader.style.display = 'none';
+      const isVisible = visibleRivals[rival.username] === true;
+      rivalHeader.style.display = isVisible ? 'table-cell' : 'none';
       makeHeaderSticky(rivalHeader);
 
       if (shouldAddRivalControls) {
@@ -448,15 +463,16 @@
 
         const visibilityCheckbox = document.createElement('input');
         visibilityCheckbox.type = 'checkbox';
-        visibilityCheckbox.checked = false;
+        visibilityCheckbox.checked = isVisible;
         visibilityCheckbox.setAttribute('aria-label', `${rival.name}の列を表示`);
         visibilityCheckbox.style.marginRight = '0.25em';
         visibilityCheckbox.addEventListener('change', () => {
           const visible = visibilityCheckbox.checked;
-          rivalHeader.style.display = visible ? '' : 'none';
+          visibleRivals[rival.username] = visible;
+          rivalHeader.style.display = visible ? 'table-cell' : 'none';
           scoreRows.forEach(row => {
             const cell = row.querySelector(`.td-rival-score-${index}`);
-            if (cell) cell.style.display = visible ? '' : 'none';
+            if (cell) cell.style.display = visible ? 'table-cell' : 'none';
           });
         });
         visibilityLabel.prepend(visibilityCheckbox);
@@ -476,7 +492,7 @@
         const rivalScore = match ? rival.scores[`${match[1]}/${match[2]}`] : null;
         const rivalCell = document.createElement('td');
         rivalCell.className = `td-rival-score-${index}`;
-        rivalCell.style.display = 'none';
+        rivalCell.style.display = isVisible ? 'table-cell' : 'none';
 
         const scoreSpan = document.createElement('span');
         scoreSpan.className = 'sp-score';

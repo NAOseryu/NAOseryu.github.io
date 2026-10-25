@@ -5,7 +5,8 @@
   const SCRIPT_ID = 'score_diff';
 
   // 外部スクリプトを読み込むヘルパー関数
-  function loadScoreDiffScript() {
+  // 表の再描画後は、既存の差分列を作り直すモードで読み込む
+  function loadScoreDiffScript(forceReapply) {
     // 既存のスクリプト要素を検索
     const existingScript = document.getElementById(SCRIPT_ID);
 
@@ -19,12 +20,56 @@
     const script = document.createElement('script');
     script.src = SCRIPT_URL;
     script.id = SCRIPT_ID;
+    script.dataset.forceReapply = forceReapply ? 'true' : 'false';
     document.body.appendChild(script);
     console.log(`[ScoreDiff] 新しいスクリプトを読み込みました: ${SCRIPT_URL}`);
   }
 
   // 初回実行: ページロード時に一度差分スクリプトを読み込む
-  loadScoreDiffScript();
+  loadScoreDiffScript(false);
+
+  // ブックマークレット自身が追加した要素は再適用の監視対象から除外する
+  function isScoreDiffElement(node) {
+    return node.nodeType === Node.ELEMENT_NODE &&
+      node.matches('#score_diff, #rival-column-controls, #th-sort-diff, #th-sort-played-at, ' +
+        'th[id^="th-sort-rival-score-"], .td-diff, .td-played-at, [class*="td-rival-score-"]');
+  }
+
+  // 差分列やチェックボックスの変更ではなく、元サイトの表更新だけを検出する
+  function isPageTableMutation(mutation) {
+    const target = mutation.target.nodeType === Node.ELEMENT_NODE
+      ? mutation.target
+      : mutation.target.parentElement;
+    if (target && target.closest(
+      '#score_diff, #rival-column-controls, #th-sort-diff, #th-sort-played-at, ' +
+      'th[id^="th-sort-rival-score-"], .td-diff, .td-played-at, [class*="td-rival-score-"]'
+    )) {
+      return false;
+    }
+
+    return [...mutation.addedNodes, ...mutation.removedNodes]
+      .some(node => !isScoreDiffElement(node));
+  }
+
+  // 短時間に続くDOM更新をまとめ、表の再描画後に一度だけ再適用する
+  function scheduleScoreDiffReload() {
+    clearTimeout(window._scoreDiffReloadTimer);
+    window._scoreDiffReloadTimer = setTimeout(() => loadScoreDiffScript(true), 400);
+  }
+
+  const scoreTable = document.querySelector('.tr-scores-header')?.closest('table');
+  if (scoreTable && scoreTable.parentElement && !window._scoreDiffTableObserver) {
+    // 表の行が差し替わるケースもMutationObserverで検出する
+    window._scoreDiffTableObserver = new MutationObserver(mutations => {
+      if (mutations.some(isPageTableMutation)) {
+        scheduleScoreDiffReload();
+      }
+    });
+    window._scoreDiffTableObserver.observe(scoreTable.parentElement, {
+      childList: true,
+      subtree: true
+    });
+  }
   
   // window.reloadTable のモンキーパッチ
   if (typeof window.reloadTable === 'function' && !window._original_reloadTable) {
@@ -34,10 +79,11 @@
     // window.reloadTable を上書き
     window.reloadTable = function() {
       // 元の関数を実行 (argumentsをそのまま渡す)
-      window._original_reloadTable.apply(this, arguments);
+      const result = window._original_reloadTable.apply(this, arguments);
 
-      // 元の処理が完了した後、差分スクリプトを再読み込みする
-      loadScoreDiffScript();
+      // 非同期の表更新が落ち着いてから差分列を再適用する
+      scheduleScoreDiffReload();
+      return result;
     };
     console.log('[ScoreDiff] window.reloadTable をフック（上書き）しました。');
   } else if (typeof window.reloadTable !== 'function') {
